@@ -18,6 +18,16 @@ header {
     text-align: center;
     font-weight: 600;
     border-bottom: 1px solid #3a3a3c;
+    position: relative;
+}
+#generatedTimestamp {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-weight: 400;
+    color: #8e8e93;
 }
 #tabs {
     display: flex;
@@ -160,7 +170,9 @@ td.location { width: 360px; text-align: center; }
 </head>
 <body>
 
-<header>Inmate Directory</header>
+<header>Inmate Directory
+<span id="generatedTimestamp">Generated on 2025-12-10 22:04:57</span>
+</header>
 
 <!-- Tabs -->
 <div id="tabs">
@@ -254,7 +266,7 @@ let locFilter = document.getElementById("locFilter");
 let paginationEl = document.getElementById("pagination");
 let recordCounterEl = document.getElementById("recordCounter");
 let statsContainer = document.getElementById("statsContainer");
-let ROWS_PER_PAGE = 100;
+let ROWS_PER_PAGE = 50;
 let currentPage = 1;
 let filteredData = data;
 let sortColumn = null;
@@ -288,7 +300,6 @@ function renderTable(){
     });
 
     recordCounterEl.textContent = "Showing "+start+"-"+end+" of "+filteredData.length+" records (Total: "+data.length+")";
-
     renderPagination();
 }
 
@@ -296,13 +307,24 @@ function renderTable(){
 function renderPagination(){
     paginationEl.innerHTML = "";
     let totalPages = Math.ceil(filteredData.length/ROWS_PER_PAGE);
-    for(let i=1;i<=totalPages;i++){
-        let btn = document.createElement("button");
-        btn.className = "page-btn"+(i===currentPage?" active":"");
-        btn.textContent = i;
-        btn.addEventListener("click", function(){ currentPage=i; renderTable(); });
-        paginationEl.appendChild(btn);
+    let pageLinks = [];
+
+    if(totalPages <= 10){
+        for(let i=1;i<=totalPages;i++) pageLinks.push(i);
+    } else {
+        pageLinks = [1,2,3,"...",totalPages-2,totalPages-1,totalPages];
+        if(currentPage>4 && currentPage<totalPages-3){
+            pageLinks = [1,"...",currentPage-1,currentPage,currentPage+1,"...",totalPages];
+        }
     }
+
+    pageLinks.forEach(function(p){
+        let btn = document.createElement("button");
+        btn.className = "page-btn"+(p===currentPage?" active":"");
+        btn.textContent = p;
+        if(p!=="...") btn.addEventListener("click", function(){ currentPage=p; renderTable(); });
+        paginationEl.appendChild(btn);
+    });
 }
 
 /* ------------------- Search + Filter ------------------- */
@@ -340,10 +362,8 @@ document.querySelectorAll("thead th").forEach(function(th){
 function renderStats(){
     let ages = data.map(function(x){ return parseInt(x.Age); }).filter(function(a){ return !isNaN(a); });
     let avgAge = (ages.reduce(function(a,b){return a+b;},0)/ages.length).toFixed(1);
-
     let locCounts = {};
     data.forEach(function(r){ locCounts[r.Location] = (locCounts[r.Location]||0)+1; });
-
     let facilities = ["Airway Heights Corrections Center", "Airway Heights Corrections Center - MSU", "Cedar Creek Corrections Center", "Clallam Bay Corrections Center - IMU", "Clallam Bay Corrections Center - MSC", "Coyote Ridge Corrections Center", "Coyote Ridge Corrections Center - MSU", "Monroe Correctional Complex - IMU", "Monroe Correctional Complex - SRTC", "Monroe Correctional Complex - TRU", "Monroe Correctional Complex - WSR", "Monroe Corrections Center - WSR/MSU", "Olympic Corrections Center", "Stafford Creek Corrections Center", "Stafford Creek Corrections Center - IMU", "Washington Corrections Center - Hospital", "Washington Corrections Center - IMU", "Washington Corrections Center - RC", "Washington Corrections Center - TC", "Washington Corrections Center for Women", "Washington Corrections Center for Women - MSC", "Washington Corrections Center for Women - Receiving", "Washington State Penitentiary", "Washington State Penitentiary - IMU", "Washington State Penitentiary - MSC", "Washington State Penitentiary - MSU"];
     let locListHTML = facilities.map(function(f){
         let count = locCounts[f] || 0;
