@@ -253,7 +253,7 @@ function placeholderIcon(letter){
 }
 
 function iconPath(name){
-  return "characters/" + String(name).replace(/ /g,"_") + ".webp";
+  return "characters/" + String(name).replace(/ /g,"_") + ".png";
 }
 
 const characters = [
@@ -276,7 +276,8 @@ const characters = [
   ["Ninja","Katana","Shadowstep: Execute an enemy upon evading them. Also gain 0.5% Evasion per level.","Complete Desert Tier 1; Buy Katana","32"],
   ["Vlad","Blood Magic","Vampire: Gain 1% Lifesteal per level.","Complete Desert Tier 2; Buy Blood Magic","32"],
   ["Sir Chadwell","Corrupted Sword","Gain 1% Difficulty per level.","Complete Forest Tier 3; Buy Corrupted Sword","33"],
-  ["Dicehead","Dice","Gamba: Gain a Random Stat per level.","Complete 100 Quests; Buy Dice",""]
+  ["Dicehead","Dice","Gamba: Gain a Random Stat per level.","Complete 100 Quests; Buy Dice",""],
+  ["Roberto","Scyth","Hoarder: Free chest every 60s, increasing to 120s over levels. He can also float  (a little).","Defeat Spooky Steve in the Graveyard; Buy Scyth",""],
 ];
 
 const tbody = document.getElementById("tbody");
