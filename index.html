@@ -85,32 +85,47 @@ header{margin-bottom:18px}
 h1{margin:0;font-size:22px}
 .sub{font-size:13px;color:var(--muted);margin-top:4px}
 
-/* HOME GRID CARD */
+/* HOME CARD */
 .card{
   background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
   border:1px solid var(--border);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
-  padding:28px;
+  padding:36px 28px 40px;
   display:flex;
-  justify-content:center;
+  flex-direction:column;
   align-items:center;
+  gap:28px;
   min-height: calc(100vh - var(--navH) - 220px);
 }
 
-/* ✅ FLEX WRAP: automatically centers every row, including an incomplete last row */
+/* LOGO */
+.home-logo{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.home-logo img{
+  max-width:360px;
+  width:100%;
+  height:auto;
+  display:block;
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,.45));
+}
+
+/* GRID */
 .home-grid{
   width:100%;
   max-width:980px;
   display:flex;
   flex-wrap:wrap;
-  justify-content:center; /* centers each row */
+  justify-content:center;
   gap:18px;
 }
 
-/* Tiles keep same visual size */
 .tile{
-  width:300px;              /* fixed tile width so rows are predictable */
+  width:300px;
   max-width:100%;
   aspect-ratio: 1 / 1;
   border-radius:18px;
@@ -160,15 +175,17 @@ h1{margin:0;font-size:22px}
   color:var(--muted);
 }
 
-/* Responsive: shrink tile width so it fits nicely */
+/* Responsive tweaks */
 @media (max-width: 980px){
   .tile{width:280px;}
+  .home-logo img{max-width:300px;}
 }
 @media (max-width: 720px){
   .tile{width:260px;}
 }
 @media (max-width: 560px){
   .tile{width:100%;}
+  .home-logo img{max-width:240px;}
 }
 </style>
 </head>
@@ -191,76 +208,68 @@ h1{margin:0;font-size:22px}
 
 <div class="wrap">
   <header>
-    <div class="header-top">
-      <div>
-        <h1>Megabonk Database</h1>
-        <div class="sub">???</div>
-      </div>
-    </div>
+
   </header>
 
   <div class="card">
+    <!-- LOGO -->
+    <div class="home-logo">
+      <img src="site_images/logo.png" alt="Megabonk DB Logo">
+    </div>
+
+    <!-- SELECTION GRID -->
     <div class="home-grid">
-      <!-- Characters -->
       <a class="tile" href="characters.html">
-        <div class="big-icon" aria-hidden="true">
+        <div class="big-icon">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5Z" stroke="currentColor" stroke-width="2"/>
-            <path d="M4 22c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 22c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2"/>
           </svg>
         </div>
         <div class="label">Characters</div>
         <div class="small">Roster & unlocks</div>
       </a>
 
-      <!-- Weapons -->
       <a class="tile" href="weapons.html">
-        <div class="big-icon" aria-hidden="true">
+        <div class="big-icon">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M14 3l7 7-3 3-7-7 3-3Z" stroke="currentColor" stroke-width="2"/>
-            <path d="M2 22l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M9 13l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2 22l6-6" stroke="currentColor" stroke-width="2"/>
           </svg>
         </div>
         <div class="label">Weapons</div>
-        <div class="small">Attacks & unlocks</div>
+        <div class="small">Attacks & upgrades</div>
       </a>
 
-      <!-- Tomes -->
       <a class="tile" href="tomes.html">
-        <div class="big-icon" aria-hidden="true">
+        <div class="big-icon">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M6 4h10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
-            <path d="M8 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="label">Tomes</div>
-        <div class="small">Stats & objectives</div>
+        <div class="small">Stats & bonuses</div>
       </a>
 
-      <!-- Items -->
       <a class="tile" href="items.html">
-        <div class="big-icon" aria-hidden="true">
+        <div class="big-icon">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M4 7h16v13H4V7Z" stroke="currentColor" stroke-width="2"/>
             <path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2"/>
-            <path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="label">Items</div>
         <div class="small">Rarities & effects</div>
       </a>
 
-      <!-- Stats -->
       <a class="tile" href="#">
-        <div class="big-icon" aria-hidden="true">
+        <div class="big-icon">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8 19V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M12 19V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M16 19V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M20 19V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 19V5" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 19V11" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 19V8" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 19V14" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 19V6" stroke="currentColor" stroke-width="2"/>
           </svg>
         </div>
         <div class="label">Stats</div>
@@ -272,3 +281,4 @@ h1{margin:0;font-size:22px}
 
 </body>
 </html>
+
