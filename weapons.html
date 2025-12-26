@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk Weapons</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+
+.nav-links{display:flex;gap:18px;flex-wrap:wrap}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+
+.sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* DESCRIPTION PLACEHOLDER */
+.desc-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.desc-box strong{color:var(--text)}
+
+input[type="search"]{
+  width:100%;
+  max-width:420px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(30,30,44,.85);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+/* CARD + TABLE */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:auto;
+  max-height: calc(100vh - var(--navH) - 260px);
+
+  /* hide scrollbar */
+  scrollbar-width:none;
+}
+.card::-webkit-scrollbar{width:0;height:0;}
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+thead th{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(23,23,35,.98);
+  border-bottom:1px solid var(--border);
+  padding:12px;
+  text-align:left;
+  font-size:13px;
+}
+
+tbody td{
+  padding:12px;
+  border-bottom:1px solid rgba(45,45,60,.7);
+  font-size:13px;
+  vertical-align:top;
+}
+
+tbody tr:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+.item-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:160px;
+  text-align:center;
+}
+
+.icon{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.name{font-weight:800}
+.nowrap{white-space:nowrap}
+
+.hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="stats.html">Stats</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Weapons</h1>
+      </div>
+      <input id="search" type="search" placeholder="Search weapons...">
+    </div>
+
+    <div class="desc-box">
+		Players can get weapons of their choices when leveling up.<br>
+
+		Weapons then can be augmented each time you level up to upgrade their characteristics.<br>
+
+		Augments of weapons also have a colored border to indicate its rarity:<br>
+
+		Upgrades<br>
+
+		Green (Common)<br>
+		Blue (Uncommon)<br>
+		Magenta (Rare)<br>
+		Yellow (Legendary)<br>
+		Most weapons need to be unlocked by completing a Quest to appear in game. You can click on a blacked out weapon in the unlocks page to read the requirements for unlock. Alternatively, all of the quests can be viewed in the weapon tab on the quests page.
+    </div>
+  </header>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:190px">Weapon</th>
+          <th>Description</th>
+          <th style="width:320px">Unlock</th>
+          <th style="width:360px">Affected by</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="hint" id="count"></div>
+</div>
+
+<script>
+function placeholderIcon(letter){
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'>
+      <rect width='56' height='56' rx='14' fill='#1f1f2e'/>
+      <text x='28' y='36' text-anchor='middle' font-size='18'
+        fill='#bbb' font-family='system-ui' font-weight='700'>${letter}</text>
+    </svg>`
+  );
+}
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[m]));
+}
+
+/* spaces -> underscores; remove apostrophes; clean punctuation */
+function weaponFileName(name){
+  return String(name)
+    .replace(/[’‘]/g,"'")
+    .replace(/'/g,"")
+    .replace(/[^A-Za-z0-9]+/g,"_")
+    .replace(/^_+|_+$/g,"");
+}
+
+function iconPath(weaponName){
+  return `weapons/${weaponFileName(weaponName)}.png`;
+}
+
+const weapons = [
+  {name:"Flamewalker", desc:"Leaves a trail of fire behind you.", unlock:"Unlocked by default", affected:"Size, Projectile Count, Duration, Damage"},
+  {name:"Sword", desc:"Slashes through multiple enemies.", unlock:"Unlocked by default", affected:"Size, Projectile Count, Damage, Knockback"},
+  {name:"Lightning Staff", desc:"Summons lightning to smite nearby enemies.", unlock:"Unlocked by default", affected:"Damage, Projectile Bounces, Projectile Count, Size"},
+  {name:"Firestaff", desc:"Shoots fireballs that explode on impact.", unlock:"Unlocked by default", affected:"Projectile Speed, Size, Damage, Projectile Count"},
+  {name:"Chunkers", desc:"Summons Chunky rocks that orbit around you.", unlock:"Unlocked by default", affected:"Size, Damage, Knockback, Projectile Speed, Projectile Count"},
+  {name:"Bone", desc:"Throws bones that bounce off enemies.", unlock:"Unlocked by default", affected:"Damage, Projectile Bounces, Projectile Speed, Knockback, Projectile Count"},
+  {name:"Bow", desc:"Shoots arrows that pierce enemies.", unlock:"Unlocked by default", affected:"Crit Chance, Crit Damage, Damage, Projectile Count, Projectile Speed, Size"},
+  {name:"Revolver", desc:"Fires multiple bullets at enemies.", unlock:"Kill 7.500 enemies", affected:"Crit Chance, Crit Damage, Damage, Projectile Bounces, Projectile Count, Projectile Speed"},
+  {name:"Aegis", desc:"Blocks incoming attacks and sends out shockwaves.", unlock:"Block 500 damage with armor as sir Oofie", affected:"Projectile Count, Size, Damage, Knockback"},
+  {name:"Bananarang", desc:"Throws bananas that return to the owner.", unlock:"Find the hidden Banana", affected:"Damage, Projectile Count, Projectile Speed, Size"},
+  {name:"Aura", desc:"Damage enemies in an area around you.", unlock:"Don't take any damage for 2 minutes", affected:"Damage, Size"},
+  {name:"Axe", desc:"Throws spinning axes that deal area-damage.", unlock:"Kill 2.000 enemies using the Sword", affected:"Projectile Count, Duration, Damage, Size"},
+  {name:"Space Noodle", desc:"Attaches to a nearby enemy. Deals damage to enemies in-between.", unlock:"Complete Desert Tier 2 as Tony McZoom", affected:"Damage, Size, Duration"},
+  {name:"Sniper Rifle", desc:"Fires piercing bullets. Can be manually aimed.", unlock:"Get Precision Tome to Level 10", affected:"Damage, Projectile Count, Size"},
+  {name:"Slutty Rocket", desc:"Fires Homing Missiles.", unlock:"Kill 15.000 enemies as CL4NK", affected:"Projectile Speed, Projectile Count, Damage, Crit Chance"},
+  {name:"Shotgun", desc:"Fires a spread shot, stronger at close range. Can be manually aimed.", unlock:"5% chance to find upon breaking a Tumbleweed on Desert Stage 2", affected:"Crit Chance, Damage, Knockback, Projectile Count, Size"},
+  {name:"Mines", desc:"Deploys mines around you that explode when enemies get close.", unlock:"Kill 7.500 enemies with Slutty Rocket", affected:"Duration, Damage, Size, Projectile Count"},
+  {name:"Wireless Dagger", desc:"Fires smart daggers at your enemies. Wireless tech goes crazy these days.", unlock:"Get the Lightning Staff to level 15", affected:"Projectile Count, Projectile Speed, Damage, Projectile Bounces"},
+  {name:"Frostwalker", desc:"Freezes and damages enemies in an area around you.", unlock:"Freeze 1.000 enemies with the Ice Cube", affected:"Damage, Size, Duration"},
+  {name:"Tornado", desc:"Sends out tornadoes, knocking enemies back.", unlock:"Charge a Charge Shrine during a Sandstorm on Desert", affected:"Knockback, Damage, Size, Projectile Speed, Projectile Count"},
+  {name:"Dexecutioner", desc:"A piercing blade. Small chance to instantly execute an enemy.", unlock:"Kill 12,500 enemies using the Sword", affected:"Crit Chance, Damage, Size, Projectile Count"},
+  {name:"Blood Magic", desc:"Summons blood magic. 5% chance to increase Max HP upon killing enemies.", unlock:"Get the Bloody Tome to level 12", affected:"Damage, Projectile Count, Size"},
+  {name:"Black Hole", desc:"Shoots a black hole that pulls enemies in.", unlock:"Get Knockback Tome to level 10", affected:"Duration, Damage, Size, Projectile Count"},
+  {name:"Poison Flask", desc:"Throws toxic flasks on enemies, dealing area-damage and poisoning them.", unlock:"Kill Scorpionussy Miniboss on Desert 3 times", affected:"Damage, Duration, Projectile Count, Projectile Speed, Size"},
+  {name:"Katana", desc:"A Sharp Blade that targets the closest enemy.", unlock:"5% chance to find upon breaking a Tumbleweed on Desert Stage 1", affected:"Size, Duration, Projectile Count, Damage, Critical Chance, Critical Damage"},
+  {name:"Dragon's Breath", desc:"Fires a fierce dragon's breath in the movement direction.", unlock:"Kill 1.000 Wisp as Fox on Desert", affected:"Damage, Duration, Size"},
+  {name:"Dice", desc:"Throw dice that deal 1-6 damage. Rolling a 6 increases the weapon's Crit Chance permanently.", unlock:"Get Luck Tome to level 12", affected:"Size, Crit Chance, Damage, Crit Damage, Projectile Speed, Projectile Count"},
+  {name:"Hero Sword", desc:"Slashes through multiple enemies and fires a slashing projectile.", unlock:"Defeat a Stage Boss without picking up any items, powerups or using shrines", affected:"Damage, Projectile Count, Projectile Speed, Size"},
+  {name:"Corrupted Sword", desc:"Slashes in both directions. Deals increased damage at low HP.", unlock:"Get Cursed Tome to level 20 in under 10 minutes", affected:""}
+];
+
+const tbody = document.getElementById("tbody");
+const count = document.getElementById("count");
+const search = document.getElementById("search");
+
+function render(){
+  tbody.innerHTML = "";
+  weapons.forEach(w => {
+    const tr = document.createElement("tr");
+    const src = iconPath(w.name);
+    const letter = (w.name && w.name.length) ? w.name[0].toUpperCase() : "?";
+
+    tr.innerHTML = `
+      <td>
+        <div class="item-cell">
+          <div class="icon">
+            <img src="${src}" alt="${esc(w.name)} icon"
+                 onerror="this.onerror=null; this.src='${placeholderIcon(letter)}';">
+          </div>
+          <div class="name">${esc(w.name)}</div>
+        </div>
+      </td>
+      <td>${esc(w.desc)}</td>
+      <td>${esc(w.unlock)}</td>
+      <td>${esc(w.affected)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  count.textContent = `Showing ${weapons.length} weapons.`;
+}
+
+search.addEventListener("input", () => {
+  const q = search.value.toLowerCase();
+  let visible = 0;
+
+  [...tbody.children].forEach(r => {
+    const show = r.innerText.toLowerCase().includes(q);
+    r.style.display = show ? "" : "none";
+    if(show) visible++;
+  });
+
+  count.textContent = `Showing ${visible} of ${weapons.length} weapons.`;
+});
+
+render();
+</script>
+
+</body>
+</html>

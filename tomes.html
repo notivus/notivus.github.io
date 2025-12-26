@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk Tomes</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+
+.nav-links{display:flex;gap:18px;flex-wrap:wrap}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+
+.sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* DESCRIPTION PLACEHOLDER */
+.desc-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.desc-box strong{color:var(--text)}
+
+input[type="search"]{
+  width:100%;
+  max-width:420px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(30,30,44,.85);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+/* CARD + TABLE */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:auto;
+  max-height: calc(100vh - var(--navH) - 260px);
+
+  /* hide scrollbar */
+  scrollbar-width:none;
+}
+.card::-webkit-scrollbar{width:0;height:0;}
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+thead th{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(23,23,35,.98);
+  border-bottom:1px solid var(--border);
+  padding:12px;
+  text-align:left;
+  font-size:13px;
+}
+
+tbody td{
+  padding:12px;
+  border-bottom:1px solid rgba(45,45,60,.7);
+  font-size:13px;
+  vertical-align:top;
+}
+
+tbody tr:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+.item-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:160px;
+  text-align:center;
+}
+
+.icon{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.name{font-weight:800}
+.nowrap{white-space:nowrap}
+
+.hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV LAYOUT YOU REQUESTED -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="stats.html">Stats</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Tomes</h1>
+      </div>
+      <input id="search" type="search" placeholder="Search tomes...">
+    </div>
+
+    <div class="desc-box">
+		Tomes are used in conjunction with weapons to provide various types of powerups and abilities. These can vary in many ways depending on the character played and their playing style.
+    </div>
+  </header>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:190px">Tome</th>
+          <th>Ability</th>
+          <th style="width:360px">Objective(s)</th>
+          <th style="width:140px">Unlock Cost</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="hint" id="count"></div>
+</div>
+
+<script>
+(function(){
+  function placeholderIcon(letter){
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+      "<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'>"+
+      "<rect width='56' height='56' rx='14' fill='#1f1f2e'/>"+
+      "<text x='28' y='36' text-anchor='middle' font-size='18' fill='#bbb' font-family='system-ui' font-weight='700'>"+
+      String(letter || "?")+
+      "</text></svg>"
+    );
+  }
+
+  function esc(s){
+    return String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  // Local image path is: tomes/<TOME_NAME>.png (underscores for spaces)
+  function tomeFileName(name){
+    return String(name)
+      .replace(/[’‘]/g,"'")
+      .replace(/'/g,"")
+      .replace(/[^A-Za-z0-9]+/g,"_")
+      .replace(/^_+|_+$/g,"");
+  }
+
+  function iconPath(tomeName){
+    return "tomes/" + tomeFileName(tomeName) + ".png";
+  }
+
+  // From https://megabonk.fandom.com/wiki/Tomes (excluding first "Collected?" col)
+  const tomes = [
+    {name:"Agility Tome",   ability:"+Movement Speed - How fast you move", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Size Tome",      ability:"+Size - The size of your attacks, projectiles, explosions, and more", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Silver Tome",    ability:"+Silver Gain - Gives you more silver from all sources", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Shield Tome",    ability:"+Shield - Shield takes damage instead of losing HP before it breaks. Shield regenerates quickly after not taking damage for a while", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Regen Tome",     ability:"+HP Regen - The amount of HP you regenerate per minute", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Projectile Tome",ability:"+Projectile Speed - The speed of your projectiles", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Precision Tome", ability:"+Crit Chance - Chance to deal critical damage. More than 100% Crit Chance let's you Overcrit, dealing more damage", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Knockback Tome", ability:"+Knockback - The distance you push enemies when hitting them", objective:"Unlocked by default", cost:"N/A"},
+    {name:"HP Tome",        ability:"+Max HP - Max HP", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Evasion Tome",   ability:"+Evasion - Evasion is the chance to avoid an attack, taking no damage", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Gold Tome",      ability:"+Gold - Gives you more gold from all resources", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Damage Tome",    ability:"+Damage - increases the damage of your attacks", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Cooldown Tome",  ability:"+Attack Speed - How quickly you shoot projectiles and perform attacks", objective:"Unlocked by default", cost:"N/A"},
+    {name:"Thorns Tome",    ability:"+Thorns - Deal damage to enemies when they attack you", objective:"Block 250 attacks with Aegis", cost:"9"},
+    {name:"Quantity Tome",  ability:"+Projectile Count - Increases the number of attacks/projectiles", objective:"Fire 5,000 projectiles", cost:"9"},
+    {name:"Bloody Tome",    ability:"+Lifesteal - Your chance to heal for 1 when you hit an enemy. Over 100% will guarantee 1 heal, and give a chance to heal for a total of 2", objective:"Kill 12,000 enemies", cost:"9"},
+    {name:"Attraction Tome",ability:"+Pickup Range - Pickup Range increases the distance from which you pick up XP", objective:"Use the Shrine of Succ 8 times", cost:"9"},
+    {name:"Armor Tome",     ability:"+Armor - Armor reduces the damage you take", objective:"Kill 5,000 enemies as Sir Oofie", cost:"9"},
+    {name:"Duration Tome",  ability:"+Duration - The duration of your attacks and projectiles", objective:"Upgrade Axe to level 10", cost:"9"},
+    {name:"Luck Tome",      ability:"+Luck - Luck increases you chance to get higher tier offers from leveling up, shrines and more", objective:"0.01% chance to drop when killing an enemy", cost:"10"},
+    {name:"XP Tome",        ability:"+XP Gain - Gives you more XP from all sources", objective:"Break 20 pots in a single run", cost:"12"},
+    {name:"Cursed Tome",    ability:"+Difficulty - Increases enemy quantity, health, speed, & strength.", objective:"Beat the Stage Boss in under 5 minutes", cost:""},
+    {name:"Chaos Tome",     ability:"Boost a random stat", objective:"Charge all Charge Shrines on a Tier 3 run across all 3 stages without leaving the charge zone", cost:""}
+  ];
+
+  function render(){
+    const tbody = document.getElementById("tbody");
+    const count = document.getElementById("count");
+    const search = document.getElementById("search");
+
+    if(!tbody || !count || !search) return;
+
+    tbody.innerHTML = "";
+    for(const t of tomes){
+      const tr = document.createElement("tr");
+      const src = iconPath(t.name);
+      const letter = (t.name && t.name.length) ? t.name[0].toUpperCase() : "?";
+
+      tr.innerHTML =
+        "<td><div class='item-cell'>" +
+          "<div class='icon'>" +
+            "<img src='"+esc(src)+"' alt='"+esc(t.name)+" icon' " +
+            "onerror=\"this.onerror=null; this.src='"+placeholderIcon(letter)+"';\">" +
+          "</div>" +
+          "<div class='name'>"+esc(t.name)+"</div>" +
+        "</div></td>" +
+        "<td>"+esc(t.ability)+"</td>" +
+        "<td>"+esc(t.objective)+"</td>" +
+        "<td class='nowrap'>"+esc(t.cost)+"</td>";
+
+      tbody.appendChild(tr);
+    }
+
+    count.textContent = "Showing " + tomes.length + " tomes.";
+
+    search.addEventListener("input", function(){
+      const q = search.value.toLowerCase();
+      let visible = 0;
+      for(const r of Array.from(tbody.children)){
+        const show = r.innerText.toLowerCase().includes(q);
+        r.style.display = show ? "" : "none";
+        if(show) visible++;
+      }
+      count.textContent = "Showing " + visible + " of " + tomes.length + " tomes.";
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", render);
+  }else{
+    render();
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk DB</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+.sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* HOME GRID CARD */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height: calc(100vh - var(--navH) - 220px);
+}
+
+/* ✅ FLEX WRAP: automatically centers every row, including an incomplete last row */
+.home-grid{
+  width:100%;
+  max-width:980px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center; /* centers each row */
+  gap:18px;
+}
+
+/* Tiles keep same visual size */
+.tile{
+  width:300px;              /* fixed tile width so rows are predictable */
+  max-width:100%;
+  aspect-ratio: 1 / 1;
+  border-radius:18px;
+  border:1px solid rgba(45,45,60,.8);
+  background:rgba(10,10,16,.35);
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  text-decoration:none;
+  color:var(--text);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+
+.tile:hover{
+  transform: translateY(-2px);
+  background:rgba(255,255,255,.03);
+  border-color:rgba(120,120,160,.55);
+}
+
+.big-icon{
+  width:92px;
+  height:92px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+}
+
+.big-icon svg{
+  width:54px;
+  height:54px;
+  opacity:.9;
+}
+
+.label{
+  font-weight:900;
+  letter-spacing:.4px;
+  font-size:18px;
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* Responsive: shrink tile width so it fits nicely */
+@media (max-width: 980px){
+  .tile{width:280px;}
+}
+@media (max-width: 720px){
+  .tile{width:260px;}
+}
+@media (max-width: 560px){
+  .tile{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="#">Stats</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Megabonk Database</h1>
+        <div class="sub">???</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="home-grid">
+      <!-- Characters -->
+      <a class="tile" href="characters.html">
+        <div class="big-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M4 22c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="label">Characters</div>
+        <div class="small">Roster & unlocks</div>
+      </a>
+
+      <!-- Weapons -->
+      <a class="tile" href="weapons.html">
+        <div class="big-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M14 3l7 7-3 3-7-7 3-3Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M2 22l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9 13l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="label">Weapons</div>
+        <div class="small">Attacks & unlocks</div>
+      </a>
+
+      <!-- Tomes -->
+      <a class="tile" href="tomes.html">
+        <div class="big-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 4h10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="label">Tomes</div>
+        <div class="small">Stats & objectives</div>
+      </a>
+
+      <!-- Items -->
+      <a class="tile" href="items.html">
+        <div class="big-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 7h16v13H4V7Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="label">Items</div>
+        <div class="small">Rarities & effects</div>
+      </a>
+
+      <!-- Stats -->
+      <a class="tile" href="#">
+        <div class="big-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 19V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 19V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 19V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M20 19V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="label">Stats</div>
+        <div class="small">Nerd numbers</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

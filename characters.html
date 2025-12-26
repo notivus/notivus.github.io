@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk Characters</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+
+.nav-links{display:flex;gap:18px}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+
+.sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* DESCRIPTION PLACEHOLDER (same as Items) */
+.desc-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.desc-box strong{color:var(--text)}
+
+input[type="search"]{
+  width:100%;
+  max-width:420px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(30,30,44,.85);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+/* CARD + TABLE */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:auto;
+  max-height: calc(100vh - var(--navH) - 260px);
+
+  /* hide scrollbar */
+  scrollbar-width:none;
+}
+.card::-webkit-scrollbar{width:0;height:0;}
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+thead th{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(23,23,35,.98);
+  border-bottom:1px solid var(--border);
+  padding:12px;
+  text-align:left;
+  font-size:13px;
+}
+
+tbody td{
+  padding:12px;
+  border-bottom:1px solid rgba(45,45,60,.7);
+  font-size:13px;
+  vertical-align:top;
+}
+
+tbody tr:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+.item-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:160px;
+  text-align:center;
+}
+
+.icon{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.name{font-weight:800}
+.nowrap{white-space:nowrap}
+
+.hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="stats.html">Stats</a>
+    </div>
+  </div>
+</nav>
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Characters</h1>
+      </div>
+      <input id="search" type="search" placeholder="Search characters...">
+    </div>
+
+    <div class="desc-box">
+      
+		Characters are an integral part of the MegaBonk. Each character is unique, and begins every run with a weapon and a unique passive ability.<br>
+		There are 20 characters in MegaBonk, two of which you begin with: Fox and Sir Oofie. To unlock a new character, you must meet certain prerequisites, completion marks or milestones; which involve buying items from the shop, and completing unique challenges or reaching new milestones. Once all the conditions are met, the character will become available for purchase with Silver.
+
+
+    </div>
+  </header>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:190px">Character</th>
+          <th style="width:160px">Weapon</th>
+          <th>Passive Ability</th>
+          <th style="width:320px">Prerequisites</th>
+          <th style="width:120px">Silver Cost</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="hint" id="count"></div>
+</div>
+
+<script>
+function placeholderIcon(letter){
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'>
+      <rect width='56' height='56' rx='14' fill='#1f1f2e'/>
+      <text x='28' y='36' text-anchor='middle' font-size='18'
+        fill='#bbb' font-family='system-ui' font-weight='700'>${letter}</text>
+    </svg>`
+  );
+}
+
+function iconPath(name){
+  return "characters/" + String(name).replace(/ /g,"_") + ".webp";
+}
+
+const characters = [
+  ["Fox","Firestaff","RNG Blessing: Gain 2% Luck per level.","Unlocked by Default","Unlocked"],
+  ["Sir Oofie","Sword","Reinforced: Gain 1% Armor per level.","Unlocked by Default","Unlocked"],
+  ["Calcium","Bone","Speed Demon: Speed builds up over time, but is halved when you take damage. Also gain damage based on speed.","Kill 1,000 Skeletons; Buy Bone","9"],
+  ["Megachad","Aura","Flex: Flex to stop damage. Cooldown -0.2s per level. Gain 2.5% Damage when flexing.","Get the Damage Tome to level 7","10"],
+  ["Ogre","Axe","Warrior: Gain 1.5% Damage per level.","Kill 15,000 Goblins; Buy Axe","12"],
+  ["CL4NK","Revolver","Crit Happens: Gain 1% Crit Chance per level.","Complete Forest Tier 1; Buy Revolver","14"],
+  ["Athena","Aegis","Lock in: Deal more damage on lower HP. Gain 2 Thorns per level.","Get the Thorns Tome to level 9; Buy Aegis","16"],
+  ["Robinette","Bow","Stonks: Gain 1% Gold Gain per level. Also increase Damage slightly by total Gold in inventory.","Complete Forest Tier 2; Buy Bow",""],
+  ["Monke","Bananarang","Monke Grip: Climb up walls. Also gain +2 Max HP per level.","Find and Release Monke in the Forest","18"],
+  ["Tony McZoom","Wireless Dagger","Zap: Charge an electric attack by moving around. Gain 2% pickup range per level.","Complete 2 Challenges; Buy Wireless Dagger","19"],
+  ["Bush","Sniper Rifle","Bullseye: Random enemies are marked. Also gain 1% Crit Damage per level.","Find and Defeat Bush in the Forest; Buy Sniper Rifle","21"],
+  ["Birdo","Tornado","Float: Hold \"Jump\" to float in the air. Also gain 1% Airborne Damage per level.","Kill 100 enemies using Tornado weapon while carried by a tornado on Desert; Buy Tornado",""],
+  ["Noelle","Frostwalker","Enduring: Gain 1% Size per Level. Also increase Damage per currently frozen enemy.","Use a Microwave to duplicate Ice Crystal 3 times in a row; Buy Frostwalker",""],
+  ["Amog","Poison Flask","Plague: Poisoned enemies explode on death, poisoning nearby enemies.","Poison 50,000 enemies with Moldy Cheese; Buy Poison Flask","26"],
+  ["Spaceman","Blackhole","Quantum XP Theory: Gain 1% XP Gain per level.","Complete 6 Challenges; Buy Blackhole","28"],
+  ["Bandit","Dexecutioner","Flowstate: Gain 1% Attack Speed per level.","Find and Defeat Bandit in the Desert; Buy Dexecutioner","30"],
+  ["Ninja","Katana","Shadowstep: Execute an enemy upon evading them. Also gain 0.5% Evasion per level.","Complete Desert Tier 1; Buy Katana","32"],
+  ["Vlad","Blood Magic","Vampire: Gain 1% Lifesteal per level.","Complete Desert Tier 2; Buy Blood Magic","32"],
+  ["Sir Chadwell","Corrupted Sword","Gain 1% Difficulty per level.","Complete Forest Tier 3; Buy Corrupted Sword","33"],
+  ["Dicehead","Dice","Gamba: Gain a Random Stat per level.","Complete 100 Quests; Buy Dice",""]
+];
+
+const tbody = document.getElementById("tbody");
+const count = document.getElementById("count");
+const search = document.getElementById("search");
+
+function render(){
+  tbody.innerHTML = "";
+  characters.forEach(c=>{
+    const tr = document.createElement("tr");
+    const src = iconPath(c[0]);
+    const letter = (c[0] && c[0].length) ? c[0][0].toUpperCase() : "?";
+
+    tr.innerHTML = `
+      <td>
+        <div class="item-cell">
+          <div class="icon">
+            <img src="${src}" alt="${c[0]} icon"
+                 onerror="this.onerror=null; this.src='${placeholderIcon(letter)}';">
+          </div>
+          <div class="name">${c[0]}</div>
+        </div>
+      </td>
+      <td class="nowrap">${c[1]}</td>
+      <td>${c[2]}</td>
+      <td>${c[3]}</td>
+      <td class="nowrap">${c[4]}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  count.textContent = `Showing ${characters.length} characters.`;
+}
+
+search.addEventListener("input",()=>{
+  const q = search.value.toLowerCase();
+  let visible = 0;
+
+  [...tbody.children].forEach(r=>{
+    const show = r.innerText.toLowerCase().includes(q);
+    r.style.display = show ? "" : "none";
+    if(show) visible++;
+  });
+
+  count.textContent = `Showing ${visible} of ${characters.length} characters.`;
+});
+
+render();
+</script>
+
+</body>
+</html>

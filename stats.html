@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk Character Base Stats</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+.sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+.desc-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.desc-box strong{color:var(--text)}
+
+input[type="search"]{
+  width:100%;
+  max-width:420px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(30,30,44,.85);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+/* LIST CARD (same vibe as tables) */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:auto;
+  max-height: calc(100vh - var(--navH) - 260px);
+  padding:10px;
+
+  scrollbar-width:none;
+}
+.card::-webkit-scrollbar{width:0;height:0;}
+
+.char-row{
+  display:grid;
+  grid-template-columns: 190px 1fr;
+  gap:12px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(45,45,60,.7);
+  background:rgba(10,10,16,.35);
+  margin:10px 0;
+}
+
+.char-row:hover{
+  background:rgba(255,255,255,.03);
+}
+
+.item-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  text-align:center;
+}
+
+.icon{
+  width:200px;
+  height:300px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.icon img{width:100%;height:100%;object-fit:contain;display:block}
+.name{font-weight:800}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr)); /* 6 across on desktop */
+  gap:10px 12px;
+  align-content:start;
+}
+
+.stat{
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid rgba(45,45,60,.7);
+  background:rgba(23,23,35,.55);
+  min-width:0;
+}
+
+.stat .k{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.15;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.stat .v{
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.hint{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* Responsive: fewer columns on smaller screens */
+@media (max-width: 1100px){
+  .stats-grid{grid-template-columns: repeat(4, minmax(0, 1fr));}
+}
+@media (max-width: 820px){
+  .char-row{grid-template-columns: 1fr;}
+  .stats-grid{grid-template-columns: repeat(3, minmax(0, 1fr));}
+}
+@media (max-width: 520px){
+  .stats-grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="stats.html">Stats</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Character Base Stats</h1>
+      </div>
+      <input id="search" type="search" placeholder="Search characters / stats...">
+    </div>
+
+    <div class="desc-box">
+      Base stats at Level 1 before tomes/items. Search filters the cards below.
+    </div>
+  </header>
+
+  <div class="card" id="list"></div>
+  <div class="hint" id="count"></div>
+</div>
+
+<script>
+(function(){
+  function placeholderIcon(letter){
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+      "<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'>"+
+      "<rect width='56' height='56' rx='14' fill='#1f1f2e'/>"+
+      "<text x='28' y='36' text-anchor='middle' font-size='18' fill='#bbb' font-family='system-ui' font-weight='700'>"+
+      String(letter || "?")+
+      "</text></svg>"
+    );
+  }
+
+  function esc(s){
+    return String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function iconPath(name){
+    return "characters/" + String(name).replace(/ /g,"_") + ".png";
+  }
+
+  const statKeys = [
+    "Max HP","HP Regen","Overheal","Shield","Armor","Evasion","Lifesteal","Thorns",
+    "Damage","Crit Chance","Crit Damage","Attack Speed","Projectile Count","Projectile Bounces",
+    "Size","Projectile Speed","Duration","Damage to Elites","Knockback","Movement Speed",
+    "Extra Jumps","Jump Height","Luck","Difficulty","Pickup Range","XP Gain","Gold Gain",
+    "Silver Gain","Elite Spawn Increase","Powerup Multiplier","Powerup Drop Chance"
+  ];
+
+  // same data block as before
+  const rows = [
+    {Character:"Fox", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"6%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"8","Luck":"15%","Difficulty":"0%","Pickup Range":"9","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Sir Oofie", "Max HP":"150","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"17%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"7","Luck":"0%","Difficulty":"0%","Pickup Range":"5","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Calcium", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0%","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.2%","Extra Jumps":"0","Jump Height":"9","Luck":"0%","Difficulty":"0%","Pickup Range":"8","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Megachad", "Max HP":"120","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"8","Luck":"0%","Difficulty":"0%","Pickup Range":"5","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Ogre", "Max HP":"140","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"6%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.1x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"0.9x","Extra Jumps":"0","Jump Height":"7","Luck":"-1%","Difficulty":"0%","Pickup Range":"5","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"CL4NK", "Max HP":"40","HP Regen":"10","Overheal":"0","Shield":"50","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0%","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.1x","Extra Jumps":"0","Jump Height":"9","Luck":"0%","Difficulty":"0%","Pickup Range":"8","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Athena", "Max HP":"125","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"17%","Evasion":"1%","Lifesteal":"0%","Thorns":"5","Damage":"1.0%","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"250%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"7","Luck":"0%","Difficulty":"0%","Pickup Range":"5","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Robinette", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.1x","Extra Jumps":"0","Jump Height":"10","Luck":"0%","Difficulty":"0%","Pickup Range":"8","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Monke", "Max HP":"135","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.2x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"9","Luck":"0%","Difficulty":"0%","Pickup Range":"5","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Tony McZoom", "Max HP":"70","HP Regen":"10","Overheal":"0","Shield":"10","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.3x","Extra Jumps":"0","Jump Height":"10","Luck":"0%","Difficulty":"0%","Pickup Range":"8","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Bush"},
+    {Character:"Birdo", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"1%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.1x","Extra Jumps":"1","Jump Height":"9","Luck":"0%","Difficulty":"0%","Pickup Range":"10","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Noelle", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"6%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.1x","Extra Jumps":"0","Jump Height":"10","Luck":"0%","Difficulty":"0%","Pickup Range":"10","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Amog"},
+    {Character:"Spaceman"},
+    {Character:"Bandit"},
+    {Character:"Ninja", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"6%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"1%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.2x","Extra Jumps":"0","Jump Height":"9","Luck":"0%","Difficulty":"0%","Pickup Range":"8","XP Gain":"1.0x","Gold Gain":"1.0x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"},
+    {Character:"Sir Chadwell"},
+    {Character:"Dicehead", "Max HP":"100","HP Regen":"10","Overheal":"0","Shield":"0","Armor":"0%","Evasion":"6%","Lifesteal":"0%","Thorns":"0","Damage":"1.0x","Crit Chance":"6%","Crit Damage":"2.0x","Attack Speed":"100%","Projectile Count":"0","Projectile Bounces":"0","Size":"1.0x","Projectile Speed":"1.0x","Duration":"1.0x","Damage to Elites":"1.0x","Knockback":"1.0x","Movement Speed":"1.0x","Extra Jumps":"0","Jump Height":"7","Luck":"0%","Difficulty":"0%","Pickup Range":"10","XP Gain":"1.0x","Gold Gain":"1.1x","Silver Gain":"1.0x","Elite Spawn Increase":"1.0x","Powerup Multiplier":"1.0x","Powerup Drop Chance":"1.0x"}
+  ];
+
+  function render(){
+    const list = document.getElementById("list");
+    const count = document.getElementById("count");
+    const search = document.getElementById("search");
+
+    list.innerHTML = "";
+
+    rows.forEach(obj=>{
+      const name = obj.Character || "";
+      const src = iconPath(name);
+      const letter = name ? name[0].toUpperCase() : "?";
+
+      const row = document.createElement("div");
+      row.className = "char-row";
+
+      let statsHtml = "";
+      for(const k of statKeys){
+        const v = obj[k] ?? "";
+        statsHtml += `
+          <div class="stat" data-k="${esc(k)}" data-v="${esc(v)}">
+            <div class="k" title="${esc(k)}">${esc(k)}</div>
+            <div class="v" title="${esc(v)}">${esc(v)}</div>
+          </div>
+        `;
+      }
+
+      row.innerHTML = `
+        <div class="item-cell">
+          <div class="icon">
+            <img src="${esc(src)}" alt="${esc(name)} icon"
+                 onerror="this.onerror=null; this.src='${placeholderIcon(letter)}';">
+          </div>
+          <div class="name">${esc(name)}</div>
+        </div>
+        <div class="stats-grid">
+          ${statsHtml}
+        </div>
+      `;
+
+      list.appendChild(row);
+    });
+
+    const total = rows.length;
+    count.textContent = `Showing ${total} characters.`;
+
+    search.addEventListener("input", ()=>{
+      const q = search.value.toLowerCase();
+      let visible = 0;
+
+      [...list.children].forEach(card=>{
+        const txt = card.innerText.toLowerCase();
+        const show = txt.includes(q);
+        card.style.display = show ? "" : "none";
+        if(show) visible++;
+      });
+
+      count.textContent = `Showing ${visible} of ${total} characters.`;
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", render);
+  }else{
+    render();
+  }
+})();
+</script>
+
+</body>
+</html>

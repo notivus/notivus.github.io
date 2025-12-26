@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Megabonk Items</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --panel:#171723;
+  --border:#2d2d3c;
+  --text:#eaeaf2;
+  --muted:#a6a6bb;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+
+  --common:#bfc3ff;
+  --uncommon:#6aff9d;
+  --rare:#6ad0ff;
+  --legendary:#ffb347;
+
+  --navH:72px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
+    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
+  backdrop-filter:blur(10px);
+  background:rgba(23,23,35,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.nav-title{font-weight:800;letter-spacing:.5px}
+
+.nav-links{display:flex;gap:18px}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+/* PAGE */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:24px;
+  padding-top: calc(var(--navH) + 24px);
+}
+
+header{margin-bottom:18px}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+h1{margin:0;font-size:22px}
+
+.sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.desc-box{
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.desc-box strong{color:var(--text)}
+
+input[type="search"]{
+  width:100%;
+  max-width:420px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(30,30,44,.85);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+/* CARD + TABLE */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:auto;
+  max-height: calc(100vh - var(--navH) - 260px);
+  scrollbar-width:none;
+}
+.card::-webkit-scrollbar{width:0;height:0;}
+
+table{width:100%;border-collapse:separate;border-spacing:0}
+
+thead th{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(23,23,35,.98);
+  border-bottom:1px solid var(--border);
+  padding:12px;
+  text-align:left;
+  font-size:13px;
+}
+
+tbody td{
+  padding:12px;
+  border-bottom:1px solid rgba(45,45,60,.7);
+  font-size:13px;
+  vertical-align:top;
+}
+
+tbody tr.data-row:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+.item-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:160px;
+  text-align:center;
+}
+
+.icon{
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.icon img{width:100%;height:100%;object-fit:contain}
+
+.name{font-weight:800}
+
+.section-row td{
+  padding:14px 12px;
+  font-weight:800;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+  background:rgba(10,10,16,.55);
+}
+
+.badge{display:inline-flex;align-items:center;gap:10px}
+
+.dot{
+  width:10px;height:10px;border-radius:999px;
+  box-shadow:0 0 0 4px rgba(255,255,255,.03);
+}
+
+.dot.common{background:var(--common)}
+.dot.uncommon{background:var(--uncommon)}
+.dot.rare{background:var(--rare)}
+.dot.legendary{background:var(--legendary)}
+
+.rarity.common{color:var(--common);font-weight:700}
+.rarity.uncommon{color:var(--uncommon);font-weight:700}
+.rarity.rare{color:var(--rare);font-weight:700}
+.rarity.legendary{color:var(--legendary);font-weight:700}
+
+.hint{font-size:12px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">MEGABONK DB</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="weapons.html">Weapons</a>
+      <a href="tomes.html">Tomes</a>
+      <a href="items.html">Items</a>
+      <a href="stats.html">Stats</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <h1>Items</h1>
+        <div class="sub"><code></code></div>
+      </div>
+      <input id="search" type="search" placeholder="Search items...">
+    </div>
+
+    <div class="desc-box">
+		Items are special collectibles that spawn while playing the game.<br>
+		Players can pick items up to gain a special effect or enhancement based upon what type of item it is. Each item also has a colored background to indicate its rarity:<br>
+
+		Green (Common)<br>
+		Blue (Uncommon)<br>
+		Magenta (Rare)<br>
+		Yellow (Legendary)<br>
+		Most items need to be unlocked by completing a Quest to appear in game. You can click on a blacked out item in the unlocks page to read the requirements for unlock. Alternatively, all of the quests can be viewed in the Items tab on the quests page.<br>
+
+		There are currently 78 items in the game
+  </header>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:190px">Item</th>
+          <th>Description</th>
+          <th style="width:120px">Rarity</th>
+          <th style="width:320px">Unlock Objective</th>
+          <th style="width:120px">Silver Cost</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="hint" id="count"></div>
+</div>
+
+<script>
+function placeholderIcon(letter){
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'>
+      <rect width='56' height='56' rx='14' fill='#1f1f2e'/>
+      <text x='28' y='36' text-anchor='middle' font-size='18'
+        fill='#bbb' font-family='system-ui' font-weight='700'>${letter}</text>
+    </svg>`
+  );
+}
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g,m=>(
+    {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]
+  ));
+}
+
+function stem(name){
+  return name.replace(/[’‘]/g,"'")
+             .replace(/'/g,"")
+             .replace(/[()]/g," ")
+             .replace(/[^A-Za-z0-9]+/g,"_")
+             .replace(/^_+|_+$/g,"");
+}
+
+function iconPath(r,n){return `Items/${r}/Item_${stem(n)}.png`}
+
+const rarityOrder=["Common","Uncommon","Rare","Legendary"];
+
+const items=[
+
+/* ================= COMMON ================= */
+{name:"Moldy Cheese",desc:"+40% chance to poison enemies on hit.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Borgar",desc:"+2% chance to spawn Borgar upon killing an enemy.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Wrench",desc:"Charge Shrines charge faster and give better rewards.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Clover",desc:"Increase Luck by +7.5%.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Time Bracelet",desc:"+8% XP Gain.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Slippery Ring",desc:"Increase Evasion by +15%.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Golden Glove",desc:"+15% Gold gain.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Gym Sauce",desc:"+10% Damage.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Oats",desc:"+25 Max HP.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Medkit",desc:"+35 HP Regen.",rarity:"Common",objective:"Unlocked by default",cost:"N/A"},
+{name:"Turbo Socks",desc:"+15% Movement Speed.",rarity:"Common",objective:"Upgrade Agility Tome to Level 5",cost:"5"},
+{name:"Tactical Glasses",desc:"+20% damage to enemies above 90% HP.",rarity:"Common",objective:"Defeat a miniboss quickly",cost:"5"},
+{name:"Battery",desc:"+8% Attack Speed.",rarity:"Common",objective:"Upgrade Cooldown Tome to Level 5",cost:"5"},
+{name:"Forbidden Juice",desc:"+10% Crit Chance.",rarity:"Common",objective:"Crit 100 times",cost:"5"},
+{name:"Cursed Doll",desc:"Curse enemies for % max HP damage.",rarity:"Common",objective:"Die 10 times",cost:""},
+{name:"Boss Buster",desc:"+15% damage to Elites and Bosses.",rarity:"Common",objective:"Fast boss kill",cost:""},
+{name:"Key",desc:"+10% chance to open chests for free.",rarity:"Common",objective:"Purchase 25 chests",cost:"5"},
+{name:"Ice Crystal",desc:"Chance to freeze enemies on hit.",rarity:"Common",objective:"Get 50 Frostwalker kills",cost:""},
+{name:"Skuleg",desc:"+7% Difficulty.",rarity:"Common",objective:"Reach 40% difficulty",cost:""},
+{name:"Ghost",desc:"Using interactables summons ghosts.",rarity:"Common",objective:"Survive final swarm",cost:"7"},
+{name:"Cactus",desc:"Taking damage shoots thorns.",rarity:"Common",objective:"Thorns cactus kills",cost:""},
+
+/* ================= UNCOMMON ================= */
+{name:"Credit Card (Red)",desc:"+Damage when opening chests.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Golden Shield",desc:"Gain gold when taking damage.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Thunder Mitts",desc:"Lightning strike on hit (cooldown).",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Feathers",desc:"Jump higher and farther.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Electric Plug",desc:"Shock enemies when damaged.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Coward's Cloak",desc:"Speed boost on damage.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Unstable Transfusion",desc:"Apply Bloodmark on hit.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Beer",desc:"+20% Damage, -5% Max HP.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Beacon",desc:"Charge shrines heal and spawn more.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Backpack",desc:"+1 Projectile.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Phantom Shroud",desc:"Post-evade damage burst.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Campfire",desc:"Standing still heals.",rarity:"Uncommon",objective:"Unlocked by default",cost:"N/A"},
+{name:"Brass Knuckles",desc:"+20% damage to nearby enemies.",rarity:"Uncommon",objective:"Sword kills",cost:""},
+{name:"Demonic Blade",desc:"Crits can heal.",rarity:"Uncommon",objective:"Heal with lifesteal",cost:"9"},
+{name:"Demonic Blood",desc:"+Max HP per kill.",rarity:"Uncommon",objective:"Blood Magic HP gains",cost:""},
+{name:"Echo Shard",desc:"Extra XP shards.",rarity:"Uncommon",objective:"XP Tome level 8",cost:""},
+{name:"Moldy Gloves",desc:"Poison cloud on hit.",rarity:"Uncommon",objective:"Duplicate Moldy Cheese",cost:""},
+{name:"Golden Sneakers",desc:"Earn gold by moving.",rarity:"Uncommon",objective:"Break pots",cost:"9"},
+{name:"Idle Juice",desc:"Damage increases while idle.",rarity:"Uncommon",objective:"Idle kills",cost:"10"},
+{name:"Leeching Crystal",desc:"+50 HP, -50% regen.",rarity:"Uncommon",objective:"Regen Tome level 8",cost:""},
+{name:"Kevin",desc:"Kevin punches you.",rarity:"Uncommon",objective:"Obtain 3 Leeching Crystals",cost:""},
+
+/* ================= RARE ================= */
+{name:"Beefy Ring",desc:"+Damage per Max HP.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Credit Card (Green)",desc:"+Luck on chest open.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Spiky Shield",desc:"Thorns scale with Armor.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Scarf",desc:"+50% airborne damage.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Slurp Gloves",desc:"Blood magic on hit.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Mirror",desc:"Reflect damage briefly.",rarity:"Rare",objective:"Unlocked by default",cost:"N/A"},
+{name:"Turbo Skates",desc:"Attack speed scales with speed.",rarity:"Rare",objective:"Upgrade tomes in one run",cost:""},
+{name:"Slutty Cannon",desc:"Missiles on kill.",rarity:"Rare",objective:"Rocket kills",cost:""},
+{name:"Shattered Knowledge",desc:"XP shards deal damage.",rarity:"Rare",objective:"Attraction Tome level 8",cost:""},
+{name:"Quin’s Mask",desc:"Thorns can explode.",rarity:"Rare",objective:"Athena boss kill",cost:""},
+{name:"Toxic Barrel",desc:"Poison on damage.",rarity:"Rare",objective:"Poison kills",cost:""},
+{name:"Gas Mask",desc:"Armor & overheal per poison.",rarity:"Rare",objective:"Amog kills",cost:""},
+{name:"Gamer Goggles",desc:"More damage at low HP.",rarity:"Rare",objective:"Low HP boss kill",cost:""},
+{name:"Eagle Claw",desc:"Damage vs airborne.",rarity:"Rare",objective:"Birdo kills",cost:""},
+{name:"Demonic Soul",desc:"+Damage per kill.",rarity:"Rare",objective:"Level 30 as Calcium",cost:"12"},
+{name:"Bob (Dead)",desc:"Summon Bob while moving.",rarity:"Rare",objective:"Survive final swarm",cost:"12"},
+{name:"Grandma's Secret Tonic",desc:"Crit explosions.",rarity:"Rare",objective:"Sniper Rifle kills",cost:""},
+{name:"Cursed Grabbies",desc:"Cursed magic on hit.",rarity:"Rare",objective:"Cursed Tome level 10",cost:""},
+
+/* ================= LEGENDARY ================= */
+{name:"Overpowered Lamp",desc:"+1 on-hit proc chance.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Za Warudo",desc:"Freeze time on fatal damage.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Big Bonk",desc:"Chance to deal massive damage.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Spicy Meatball",desc:"Explosive attacks.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Ice Cube",desc:"Ice damage can freeze.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Giant Fork",desc:"Chance for Mega Crits.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Power Gloves",desc:"Giant blast on hit.",rarity:"Legendary",objective:"Unlocked by default",cost:"N/A"},
+{name:"Lightning Orb",desc:"Lightning strikes on hit.",rarity:"Legendary",objective:"Lightning kills",cost:"N/A"},
+{name:"Chonkplate",desc:"Overheal + Lifesteal.",rarity:"Legendary",objective:"Reach 500 Max HP",cost:""},
+{name:"Dragonfire",desc:"Fire damage can burn.",rarity:"Legendary",objective:"Fire kills",cost:"18"},
+{name:"Sucky Magnet",desc:"Pulls in all XP.",rarity:"Legendary",objective:"Complete all Charge Shrines",cost:""},
+{name:"Holy Book",desc:"+HP & regen, healing damages.",rarity:"Legendary",objective:"No-hit boss kill",cost:""},
+{name:"Speed Boi",desc:"Time slow at low HP.",rarity:"Legendary",objective:"Boss curse clear",cost:""},
+{name:"Energy Core",desc:"Shoot energy orbs.",rarity:"Legendary",objective:"Final Boss wins",cost:""},
+{name:"Anvil",desc:"Weapon upgrades gain +1 stats.",rarity:"Legendary",objective:"Complete challenges",cost:""},
+{name:"Soul Harvester",desc:"Souls on kill.",rarity:"Legendary",objective:"Survive final swarm",cost:""},
+{name:"Joe's Dagger",desc:"Execute chance increases damage.",rarity:"Legendary",objective:"Dexecutioner kills",cost:""},
+{name:"Bloody Cleaver",desc:"Bloodmark synergy.",rarity:"Legendary",objective:"Level 50 as Vlad",cost:""}
+];
+
+const tbody=document.getElementById("tbody");
+const count=document.getElementById("count");
+const search=document.getElementById("search");
+
+function section(r){
+  const tr=document.createElement("tr");
+  tr.className="section-row";
+  tr.dataset.section=r;
+  tr.innerHTML=`<td colspan="5"><span class="badge">
+    <span class="dot ${r.toLowerCase()}"></span>
+    <span class="rarity ${r.toLowerCase()}">${r}</span>
+  </span></td>`;
+  tbody.appendChild(tr);
+}
+
+function row(it){
+  const tr=document.createElement("tr");
+  tr.className="data-row";
+  tr.dataset.rarity=it.rarity;
+  const src=iconPath(it.rarity,it.name);
+  tr.innerHTML=`
+    <td><div class="item-cell">
+      <div class="icon">
+        <img src="${src}" onerror="this.src='${placeholderIcon(it.name[0])}'">
+      </div>
+      <div class="name">${esc(it.name)}</div>
+    </div></td>
+    <td>${esc(it.desc)}</td>
+    <td class="rarity ${it.rarity.toLowerCase()}">${it.rarity}</td>
+    <td>${esc(it.objective)}</td>
+    <td>${esc(it.cost)}</td>`;
+  tbody.appendChild(tr);
+}
+
+function render(){
+  tbody.innerHTML="";
+  rarityOrder.forEach(r=>{
+    section(r);
+    items.filter(i=>i.rarity===r).forEach(row);
+  });
+  update();
+}
+
+function update(){
+  const rows=[...tbody.querySelectorAll(".data-row")];
+  count.textContent=`Showing ${rows.filter(r=>r.style.display!=="none").length} of ${rows.length} items.`;
+  rarityOrder.forEach(r=>{
+    const h=tbody.querySelector(`[data-section="${r}"]`);
+    h.style.display=rows.some(x=>x.dataset.rarity===r && x.style.display!=="none")?"":"none";
+  });
+}
+
+search.addEventListener("input",()=>{
+  const q=search.value.toLowerCase();
+  [...tbody.querySelectorAll(".data-row")].forEach(r=>{
+    r.style.display=r.innerText.toLowerCase().includes(q)?"":"none";
+  });
+  update();
+});
+
+render();
+</script>
+
+</body>
+</html>
