@@ -1,217 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Megabonk Characters</title>
-
-<style>
-:root{
-  --bg:#0f0f14;
-  --panel:#171723;
-  --border:#2d2d3c;
-  --text:#eaeaf2;
-  --muted:#a6a6bb;
-  --shadow:0 10px 30px rgba(0,0,0,.35);
-  --radius:14px;
-  --navH:72px;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  background:
-    radial-gradient(1200px 700px at 20% 0%, rgba(111,97,255,.12), transparent 60%),
-    radial-gradient(1000px 600px at 80% 0%, rgba(255,179,71,.10), transparent 55%),
-    var(--bg);
-  color:var(--text);
-}
-
-/* NAV */
-nav{
-  position:fixed;
-  top:0; left:0; right:0;
-  z-index:1000;
-  backdrop-filter:blur(10px);
-  background:rgba(23,23,35,.88);
-  border-bottom:1px solid var(--border);
-  box-shadow:var(--shadow);
-}
-
-.nav-inner{
-  max-width:1200px;
-  margin:auto;
-  padding:12px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.nav-title{font-weight:800;letter-spacing:.5px}
-
-.nav-links{display:flex;gap:18px}
-
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-  padding:6px 10px;
-  border-radius:999px;
-}
-
-.nav-links a:hover{
-  color:var(--text);
-  background:rgba(255,255,255,.06);
-}
-
-/* PAGE */
-.wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:24px;
-  padding-top: calc(var(--navH) + 24px);
-}
-
-header{margin-bottom:18px}
-
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:16px;
-  flex-wrap:wrap;
-}
-
-h1{margin:0;font-size:22px}
-
-.sub{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-/* DESCRIPTION PLACEHOLDER (same as Items) */
-.desc-box{
-  margin-top:12px;
-  padding:14px 16px;
-  border:1px dashed rgba(255,255,255,.18);
-  border-radius:12px;
-  background:rgba(255,255,255,.03);
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.5;
-}
-.desc-box strong{color:var(--text)}
-
-input[type="search"]{
-  width:100%;
-  max-width:420px;
-  padding:12px 14px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(30,30,44,.85);
-  color:var(--text);
-  box-shadow:var(--shadow);
-  outline:none;
-}
-
-/* CARD + TABLE */
-.card{
-  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:auto;
-  max-height: calc(100vh - var(--navH) - 260px);
-
-  /* hide scrollbar */
-  scrollbar-width:none;
-}
-.card::-webkit-scrollbar{width:0;height:0;}
-
-table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-}
-
-thead th{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:rgba(23,23,35,.98);
-  border-bottom:1px solid var(--border);
-  padding:12px;
-  text-align:left;
-  font-size:13px;
-}
-
-tbody td{
-  padding:12px;
-  border-bottom:1px solid rgba(45,45,60,.7);
-  font-size:13px;
-  vertical-align:top;
-}
-
-tbody tr:hover td{
-  background:rgba(255,255,255,.03);
-}
-
-.item-cell{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  min-width:160px;
-  text-align:center;
-}
-
-.icon{
-  width:56px;
-  height:56px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-}
-
-.icon img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-}
-
-.name{font-weight:800}
-.nowrap{white-space:nowrap}
-
-.hint{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:10px;
-}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Megabonk Characters</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <nav>
   <div class="nav-inner">
-   <div class="nav-links"><a href="index.html">MEGABONK DB</a></div>
+    <div class="nav-links brand">
+      <a href="index.html">
+        <img src="site_images/logo.png" alt="MEGABONK DB" class="nav-logo">
+      </a>
+    </div>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="characters.html">Characters</a>
       <a href="weapons.html">Weapons</a>
       <a href="tomes.html">Tomes</a>
       <a href="items.html">Items</a>
-      <a href="stats.html">Stats</a>
+      <a href="index.html">WIP</a>
     </div>
   </div>
 </nav>
+
 <div class="wrap">
   <header>
     <div class="header-top">
@@ -220,18 +35,17 @@ tbody tr:hover td{
       </div>
       <input id="search" type="search" placeholder="Search characters...">
     </div>
-
   </header>
 
-  <div class="card">
-    <table>
+  <div class="table-container rpg-frame">
+    <table class="data-table">
       <thead>
         <tr>
-          <th style="width:190px">Character</th>
-          <th style="width:160px">Weapon</th>
+          <th>Character</th>
+          <th>Weapon</th>
           <th>Passive Ability</th>
-          <th style="width:320px">Prerequisites</th>
-          <th style="width:120px">Silver Cost</th>
+          <th>Prerequisites</th>
+          <th>Silver Cost</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -239,6 +53,7 @@ tbody tr:hover td{
   </div>
 
   <div class="hint" id="count"></div>
+  <a href="index.html" class="back-link">← Back to Dashboard</a>
 </div>
 
 <script>
@@ -277,7 +92,7 @@ const characters = [
   ["Vlad","Blood Magic","Vampire: Gain 1% Lifesteal per level.","Complete Desert Tier 2; Buy Blood Magic","32"],
   ["Sir Chadwell","Corrupted Sword","Gain 1% Difficulty per level.","Complete Forest Tier 3; Buy Corrupted Sword","33"],
   ["Dicehead","Dice","Gamba: Gain a Random Stat per level.","Complete 100 Quests; Buy Dice",""],
-  ["Roberto","Scyth","Hoarder: Free chest every 60s, increasing to 120s over levels. He can also float  (a little).","Defeat Spooky Steve in the Graveyard; Buy Scyth",""],
+  ["Roberto","Scythe","Hoarder: Free chest every 60s, increasing to 120s over levels. He can also float.","Defeat Spooky Steve in the Graveyard; Buy Scythe",""],
 ];
 
 const tbody = document.getElementById("tbody");
