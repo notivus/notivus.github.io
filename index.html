@@ -59,20 +59,21 @@
         color: #aaa;
     }
 
-    .skip-btn {
-        margin-left: auto;
+    .btn {
         border: none;
         border-radius: 10px;
-        background: #555;
         color: white;
-        padding: 10px 12px;
-        font-size: 0.8rem;
+        padding: 8px 10px;
+        font-size: 0.75rem;
         font-weight: bold;
+        margin-left: 4px;
     }
 
-    .skip-btn.active {
-        background: #8b3d3d;
-    }
+    .skip-btn { background: #555; }
+    .full-btn { background: #2c7be5; }
+
+    .active-skip { background: #8b3d3d !important; }
+    .active-full { background: #1f5fbf !important; }
 
     .copy-btn {
         width: 100%;
@@ -101,19 +102,19 @@
 
 <body>
 
-<h1>🛢 Tank Measurements 🛢</h1>
+<h1>🛢 Tank Measurements</h1>
 
 <div class="main-container" id="tankContainer"></div>
 
-<button class="copy-btn" onclick="copyMeasurements()">
-    Copy All
-</button>
+<button class="copy-btn" onclick="copyMeasurements()">Copy All</button>
 
 <textarea id="output" readonly></textarea>
 
 <script>
 
 const tanks = ["P1","P2","P3","P4","P5","P6"];
+
+const state = {};
 
 function render() {
 
@@ -122,6 +123,8 @@ function render() {
     let html = "";
 
     tanks.forEach((t, i) => {
+
+        state[t] = { mode: "normal" }; // normal | skip | full
 
         html += `
         <div class="tank-row">
@@ -148,8 +151,12 @@ function render() {
 
             <span class="unit">"</span>
 
-            <button class="skip-btn" onclick="skip('${t}', this)">
+            <button class="btn skip-btn" onclick="setMode('${t}', 'skip', this)">
                 Skip
+            </button>
+
+            <button class="btn full-btn" onclick="setMode('${t}', 'full', this)">
+                Full
             </button>
 
         </div>`;
@@ -158,6 +165,49 @@ function render() {
     container.innerHTML = html;
 
     setupFlow();
+}
+
+function setMode(tank, mode, btn) {
+
+    const feet = document.getElementById(`feet-${tank}`);
+    const inches = document.getElementById(`inches-${tank}`);
+
+    const skipBtn = btn.parentElement.querySelector(".skip-btn");
+    const fullBtn = btn.parentElement.querySelector(".full-btn");
+
+    // reset UI
+    skipBtn.classList.remove("active-skip");
+    fullBtn.classList.remove("active-full");
+
+    state[tank].mode = mode;
+
+    if (mode === "skip") {
+
+        feet.disabled = true;
+        inches.disabled = true;
+
+        feet.value = "";
+        inches.value = "";
+
+        skipBtn.classList.add("active-skip");
+    }
+
+    if (mode === "full") {
+
+        feet.disabled = true;
+        inches.disabled = true;
+
+        feet.value = "";
+        inches.value = "";
+
+        fullBtn.classList.add("active-full");
+    }
+
+    if (mode === "normal") {
+
+        feet.disabled = false;
+        inches.disabled = false;
+    }
 }
 
 function setupFlow() {
@@ -195,15 +245,11 @@ function setupFlow() {
 
             clearTimeout(timers.get(input));
 
-            const val = input.value;
-
-            // auto advance when 2 digits reached
-            if (val.length >= 2) {
+            if (input.value.length >= 2) {
                 goNext(input);
                 return;
             }
 
-            // or advance after short pause
             const timer = setTimeout(() => {
 
                 if (input.value.length > 0) {
@@ -216,7 +262,6 @@ function setupFlow() {
         });
 
         input.addEventListener("keydown", (e) => {
-
             if (e.key === "Enter") {
                 e.preventDefault();
                 goNext(input);
@@ -225,30 +270,27 @@ function setupFlow() {
     });
 }
 
-function skip(tank, btn) {
-
-    const feet = document.getElementById(`feet-${tank}`);
-    const inches = document.getElementById(`inches-${tank}`);
-
-    const disabled = !feet.disabled;
-
-    feet.disabled = disabled;
-    inches.disabled = disabled;
-
-    btn.classList.toggle("active", disabled);
-    btn.textContent = disabled ? "Skipped" : "Skip";
-}
-
 function copyMeasurements() {
 
     let out = "";
 
     tanks.forEach(t => {
 
+        const mode = state[t].mode;
+
+        if (mode === "skip") {
+            out += `${t} SKIPPED\n`;
+            return;
+        }
+
+        if (mode === "full") {
+            out += `${t} FULL\n`;
+            return;
+        }
+
         const f = document.getElementById(`feet-${t}`).value || 0;
         const i = document.getElementById(`inches-${t}`).value || 0;
 
-        // ✔ correct format: feet then inches
         out += `${t} ${f}' ${i}"\n`;
     });
 
