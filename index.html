@@ -102,9 +102,12 @@
 <body>
 
 <h1>🛢 Tank Measurements 🛢</h1>
+
 <div class="main-container" id="tankContainer"></div>
 
-<button class="copy-btn" onclick="copyMeasurements()">Copy All</button>
+<button class="copy-btn" onclick="copyMeasurements()">
+    Copy All
+</button>
 
 <textarea id="output" readonly></textarea>
 
@@ -194,21 +197,22 @@ function setupFlow() {
 
             const val = input.value;
 
-            // 🔥 AUTO ADVANCE RULE:
-            // advance if 2 digits OR user pauses typing
+            // auto advance when 2 digits reached
+            if (val.length >= 2) {
+                goNext(input);
+                return;
+            }
+
+            // or advance after short pause
             const timer = setTimeout(() => {
 
-                if (val.length > 0) {
+                if (input.value.length > 0) {
                     goNext(input);
                 }
 
-            }, 600);
+            }, 650);
 
             timers.set(input, timer);
-
-            if (val.length >= 2) {
-                goNext(input);
-            }
         });
 
         input.addEventListener("keydown", (e) => {
@@ -244,7 +248,8 @@ function copyMeasurements() {
         const f = document.getElementById(`feet-${t}`).value || 0;
         const i = document.getElementById(`inches-${t}`).value || 0;
 
-        out += `${t} ${i}" ${f}'\n`;
+        // ✔ correct format: feet then inches
+        out += `${t} ${f}' ${i}"\n`;
     });
 
     document.getElementById("output").value = out;
