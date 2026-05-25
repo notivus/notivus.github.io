@@ -39,10 +39,6 @@
         border-bottom: 1px solid #2d2d2d;
     }
 
-    .tank-row:last-child {
-        border-bottom: none;
-    }
-
     .tank-label {
         width: 42px;
         font-weight: bold;
@@ -78,10 +74,6 @@
         background: #8b3d3d;
     }
 
-    input:disabled {
-        opacity: 0.4;
-    }
-
     .copy-btn {
         width: 100%;
         margin-top: 16px;
@@ -109,13 +101,11 @@
 
 <body>
 
-<h1>🛢 Tank Measurements 🛢</h1>
+<h1>🛢 Tank Measurements</h1>
 
 <div class="main-container" id="tankContainer"></div>
 
-<button class="copy-btn" onclick="copyMeasurements()">
-    Copy All
-</button>
+<button class="copy-btn" onclick="copyMeasurements()">Copy All</button>
 
 <textarea id="output" readonly></textarea>
 
@@ -171,21 +161,17 @@ function setupFlow() {
     const inputs = Array.from(document.querySelectorAll("input"));
 
     function goNext(current) {
-
         const nextId = current.dataset.next;
 
         if (nextId) {
-
             const next = document.getElementById(nextId);
 
             if (next) {
-
                 setTimeout(() => {
                     next.focus();
                     next.select();
                 }, 50);
             }
-
         } else {
             current.blur();
         }
@@ -193,25 +179,22 @@ function setupFlow() {
 
     inputs.forEach(input => {
 
-        // sanitize numbers only
         input.addEventListener("input", () => {
+
+            // only digits
             input.value = input.value.replace(/[^0-9]/g, "");
 
-            if (input.value.length > 2) {
-                input.value = input.value.slice(0, 2);
+            // 🧠 ADVANCE ON "0" KEY RULE
+            // if user already typed 1 digit and presses 0 → treat as commit
+            if (input.value.length === 2 && input.value.endsWith("0")) {
+
+                goNext(input);
             }
         });
 
         input.addEventListener("keydown", (e) => {
 
-            // ENTER = next field
             if (e.key === "Enter") {
-                e.preventDefault();
-                goNext(input);
-            }
-
-            // SPACE = next field
-            if (e.code === "Space") {
                 e.preventDefault();
                 goNext(input);
             }
