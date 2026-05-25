@@ -144,7 +144,7 @@
 
         container.innerHTML = "";
 
-        tanks.forEach(tank => {
+        tanks.forEach((tank, index) => {
 
             measurements[tank] = {
                 skipped: false
@@ -163,6 +163,7 @@
                         inputmode="numeric"
                         pattern="[0-9]*"
                         autocomplete="off"
+                        enterkeyhint="next"
                         id="feet-${tank}"
                         placeholder="0"
                         oninput="numbersOnly(this)"
@@ -177,6 +178,7 @@
                         inputmode="numeric"
                         pattern="[0-9]*"
                         autocomplete="off"
+                        enterkeyhint="${index === tanks.length - 1 ? 'done' : 'next'}"
                         id="inches-${tank}"
                         placeholder="0"
                         oninput="numbersOnly(this)"
@@ -196,11 +198,44 @@
 
             container.appendChild(row);
         });
+
+        setupFieldNavigation();
     }
 
     function numbersOnly(input) {
 
         input.value = input.value.replace(/[^0-9]/g, "");
+    }
+
+    function setupFieldNavigation() {
+
+        const inputs = Array.from(
+            document.querySelectorAll("input")
+        );
+
+        inputs.forEach((input, index) => {
+
+            input.addEventListener("keydown", function(e) {
+
+                if (e.key === "Enter") {
+
+                    e.preventDefault();
+
+                    const nextInput = inputs[index + 1];
+
+                    if (nextInput) {
+
+                        nextInput.focus();
+
+                        nextInput.select();
+
+                    } else {
+
+                        input.blur();
+                    }
+                }
+            });
+        });
     }
 
     function toggleSkip(tank) {
