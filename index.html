@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<title>Tank Measurements</title>
+<title>Tank Measurements Woo</title>
 
 <style>
     * {
@@ -150,6 +150,8 @@
                 skipped: false
             };
 
+            const nextTank = tanks[index + 1];
+
             const row = document.createElement("div");
 
             row.className = "tank-row";
@@ -165,6 +167,7 @@
                         autocomplete="off"
                         enterkeyhint="next"
                         id="feet-${tank}"
+                        data-next="inches-${tank}"
                         placeholder="0"
                         oninput="numbersOnly(this)"
                     />
@@ -178,8 +181,9 @@
                         inputmode="numeric"
                         pattern="[0-9]*"
                         autocomplete="off"
-                        enterkeyhint="${index === tanks.length - 1 ? 'done' : 'next'}"
+                        enterkeyhint="${nextTank ? 'next' : 'done'}"
                         id="inches-${tank}"
+                        data-next="${nextTank ? `feet-${nextTank}` : ''}"
                         placeholder="0"
                         oninput="numbersOnly(this)"
                     />
@@ -199,39 +203,51 @@
             container.appendChild(row);
         });
 
-        setupFieldNavigation();
+        setupNavigation();
     }
 
     function numbersOnly(input) {
 
-        input.value = input.value.replace(/[^0-9]/g, "");
+        input.value =
+            input.value.replace(/[^0-9]/g, "");
     }
 
-    function setupFieldNavigation() {
+    function setupNavigation() {
 
-        const inputs = Array.from(
-            document.querySelectorAll("input")
-        );
+        const inputs =
+            document.querySelectorAll("input");
 
-        inputs.forEach((input, index) => {
+        inputs.forEach(input => {
 
-            input.addEventListener("keydown", function(e) {
+            input.addEventListener("keyup", function(e) {
 
-                if (e.key === "Enter") {
+                if (
+                    e.key === "Enter" ||
+                    e.keyCode === 13
+                ) {
 
                     e.preventDefault();
 
-                    const nextInput = inputs[index + 1];
+                    const nextId =
+                        this.dataset.next;
 
-                    if (nextInput) {
+                    if (nextId) {
 
-                        nextInput.focus();
+                        const nextField =
+                            document.getElementById(nextId);
 
-                        nextInput.select();
+                        if (nextField && !nextField.disabled) {
+
+                            nextField.focus();
+
+                            setTimeout(() => {
+                                nextField.select();
+                            }, 50);
+                        }
 
                     } else {
 
-                        input.blur();
+                        this.blur();
                     }
                 }
             });
@@ -243,7 +259,8 @@
         measurements[tank].skipped =
             !measurements[tank].skipped;
 
-        const skipped = measurements[tank].skipped;
+        const skipped =
+            measurements[tank].skipped;
 
         const feet =
             document.getElementById(`feet-${tank}`);
@@ -285,14 +302,16 @@
             text += `${tank} ${inches}" ${feet}'\n`;
         });
 
-        document.getElementById("output").value = text;
+        document.getElementById("output").value =
+            text;
 
         return text;
     }
 
     async function copyMeasurements() {
 
-        const text = generateOutput();
+        const text =
+            generateOutput();
 
         try {
 
