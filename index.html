@@ -101,7 +101,7 @@
 
 <body>
 
-<h1>🛢 Tank Measurements</h1>
+<h1>🛢 Tank Measurements 🛢</h1>
 
 <div class="main-container" id="tankContainer"></div>
 
@@ -129,6 +129,7 @@ function render() {
                 type="tel"
                 inputmode="numeric"
                 autocomplete="off"
+                enterkeyhint="next"
                 data-next="inches-${t}"
             />
 
@@ -139,6 +140,7 @@ function render() {
                 type="tel"
                 inputmode="numeric"
                 autocomplete="off"
+                enterkeyhint="${i === tanks.length - 1 ? 'done' : 'next'}"
                 data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ''}"
             />
 
@@ -161,17 +163,21 @@ function setupFlow() {
     const inputs = Array.from(document.querySelectorAll("input"));
 
     function goNext(current) {
+
         const nextId = current.dataset.next;
 
         if (nextId) {
+
             const next = document.getElementById(nextId);
 
             if (next) {
+
                 setTimeout(() => {
                     next.focus();
                     next.select();
                 }, 50);
             }
+
         } else {
             current.blur();
         }
@@ -179,24 +185,36 @@ function setupFlow() {
 
     inputs.forEach(input => {
 
+        // clean input
         input.addEventListener("input", () => {
-
-            // only digits
             input.value = input.value.replace(/[^0-9]/g, "");
+        });
 
-            // 🧠 ADVANCE ON "0" KEY RULE
-            // if user already typed 1 digit and presses 0 → treat as commit
-            if (input.value.length === 2 && input.value.endsWith("0")) {
-
+        // iOS + keyboard "Next"
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
                 goNext(input);
             }
         });
 
-        input.addEventListener("keydown", (e) => {
+        // 🔥 THIS is the key fix:
+        // iOS fires blur when user taps "Next" on keyboard
+        input.addEventListener("blur", (e) => {
+            const value = input.value;
 
-            if (e.key === "Enter") {
-                e.preventDefault();
-                goNext(input);
+            // only advance if user actually entered something
+            if (value !== "") {
+                const next = input.dataset.next;
+                if (next) {
+                    setTimeout(() => {
+                        const n = document.getElementById(next);
+                        if (n) {
+                            n.focus();
+                            n.select();
+                        }
+                    }, 100);
+                }
             }
         });
     });
