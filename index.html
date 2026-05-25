@@ -34,14 +34,24 @@
     .tank-row {
         display: flex;
         align-items: center;
+        justify-content: center; /* ⭐ CENTER EVERYTHING */
         gap: 6px;
-        padding: 8px 4px;
+        padding: 10px 4px;
         border-bottom: 1px solid #2d2d2d;
     }
 
     .tank-label {
         width: 42px;
         font-weight: bold;
+        text-align: right;
+        margin-right: 4px;
+    }
+
+    .entry-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
     }
 
     input {
@@ -102,7 +112,7 @@
 
 <body>
 
-<h1>🛢 Tank Measurements</h1>
+<h1>🛢 Tank Measurements 🛢</h1>
 
 <div class="main-container" id="tankContainer"></div>
 
@@ -113,7 +123,6 @@
 <script>
 
 const tanks = ["P1","P2","P3","P4","P5","P6"];
-
 const state = {};
 
 function render() {
@@ -124,40 +133,46 @@ function render() {
 
     tanks.forEach((t, i) => {
 
-        state[t] = { mode: "normal" }; // normal | skip | full
+        state[t] = { mode: "normal" };
 
         html += `
         <div class="tank-row">
 
             <div class="tank-label">${t}</div>
 
-            <input
-                id="feet-${t}"
-                type="tel"
-                inputmode="numeric"
-                autocomplete="off"
-                data-next="inches-${t}"
-            />
+            <div class="entry-group">
 
-            <span class="unit">'</span>
+                <input
+                    id="feet-${t}"
+                    type="tel"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    data-next="inches-${t}"
+                />
 
-            <input
-                id="inches-${t}"
-                type="tel"
-                inputmode="numeric"
-                autocomplete="off"
-                data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ''}"
-            />
+                <span class="unit">'</span>
 
-            <span class="unit">"</span>
+                <input
+                    id="inches-${t}"
+                    type="tel"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ''}"
+                />
 
-            <button class="btn skip-btn" onclick="setMode('${t}', 'skip', this)">
-                Skip
-            </button>
+                <span class="unit">"</span>
 
-            <button class="btn full-btn" onclick="setMode('${t}', 'full', this)">
-                Full
-            </button>
+                <button class="btn skip-btn"
+                    onclick="setMode('${t}', 'skip', this)">
+                    Skip
+                </button>
+
+                <button class="btn full-btn"
+                    onclick="setMode('${t}', 'full', this)">
+                    Full
+                </button>
+
+            </div>
 
         </div>`;
     });
@@ -165,6 +180,24 @@ function render() {
     container.innerHTML = html;
 
     setupFlow();
+}
+
+function advanceToNextTank(tank) {
+
+    const idx = tanks.indexOf(tank);
+
+    if (idx >= 0 && idx < tanks.length - 1) {
+
+        const nextTank = tanks[idx + 1];
+        const nextFeet = document.getElementById(`feet-${nextTank}`);
+
+        if (nextFeet) {
+            setTimeout(() => {
+                nextFeet.focus();
+                nextFeet.select();
+            }, 80);
+        }
+    }
 }
 
 function setMode(tank, mode, btn) {
@@ -175,39 +208,27 @@ function setMode(tank, mode, btn) {
     const skipBtn = btn.parentElement.querySelector(".skip-btn");
     const fullBtn = btn.parentElement.querySelector(".full-btn");
 
-    // reset UI
     skipBtn.classList.remove("active-skip");
     fullBtn.classList.remove("active-full");
 
     state[tank].mode = mode;
 
+    feet.disabled = true;
+    inches.disabled = true;
+
+    feet.value = "";
+    inches.value = "";
+
     if (mode === "skip") {
-
-        feet.disabled = true;
-        inches.disabled = true;
-
-        feet.value = "";
-        inches.value = "";
-
         skipBtn.classList.add("active-skip");
     }
 
     if (mode === "full") {
-
-        feet.disabled = true;
-        inches.disabled = true;
-
-        feet.value = "";
-        inches.value = "";
-
         fullBtn.classList.add("active-full");
     }
 
-    if (mode === "normal") {
-
-        feet.disabled = false;
-        inches.disabled = false;
-    }
+    // ⭐ AUTO ADVANCE AFTER BUTTON PRESS
+    advanceToNextTank(tank);
 }
 
 function setupFlow() {
@@ -251,11 +272,9 @@ function setupFlow() {
             }
 
             const timer = setTimeout(() => {
-
                 if (input.value.length > 0) {
                     goNext(input);
                 }
-
             }, 650);
 
             timers.set(input, timer);
