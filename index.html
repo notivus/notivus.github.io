@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Tank Measurements</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        margin: 0;
+        padding: 16px;
+        font-family: Arial, sans-serif;
+        background: #121212;
+        color: white;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 18px;
+        font-size: 1.7rem;
+    }
+
+    .tank-card {
+        background: #1e1e1e;
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+
+    .tank-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .tank-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .skip-btn {
+        background: #555;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .inputs {
+        display: flex;
+        gap: 10px;
+    }
+
+    .input-group {
+        flex: 1;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        color: #bbb;
+        font-size: 0.9rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: none;
+        background: #2d2d2d;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    input.skipped {
+        opacity: 0.45;
+        text-decoration: line-through;
+    }
+
+    .copy-btn {
+        position: sticky;
+        bottom: 12px;
+        width: 100%;
+        padding: 18px;
+        border: none;
+        border-radius: 16px;
+        background: #18a558;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 170px;
+        margin-top: 18px;
+        border-radius: 14px;
+        border: none;
+        background: #252525;
+        color: white;
+        padding: 14px;
+        font-size: 1rem;
+    }
+</style>
+</head>
+<body>
+
+<h1>🛢 Tank Measurements</h1>
+
+<div id="tankContainer"></div>
+
+<button class="copy-btn" onclick="copyMeasurements()">
+    Copy All Measurements
+</button>
+
+<textarea 
+    id="output" 
+    readonly 
+    placeholder="Measurements will appear here..."
+></textarea>
+
+<script>
+    const tanks = ["P1", "P2", "P3", "P4", "P5", "P6"];
+
+    const measurements = {};
+
+    const container = document.getElementById("tankContainer");
+
+    function renderTanks() {
+        container.innerHTML = "";
+
+        tanks.forEach(tank => {
+
+            const card = document.createElement("div");
+            card.className = "tank-card";
+
+            card.innerHTML = `
+                <div class="tank-header">
+                    <div class="tank-title">${tank}</div>
+
+                    <button 
+                        class="skip-btn"
+                        onclick="toggleSkip('${tank}')"
+                        id="skip-${tank}"
+                    >
+                        Skip
+                    </button>
+                </div>
+
+                <div class="inputs">
+                    <div class="input-group">
+                        <label>Feet</label>
+
+                        <input
+                            type="tel"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            autocomplete="off"
+                            id="feet-${tank}"
+                            placeholder="0"
+                            oninput="numbersOnly(this)"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label>Inches</label>
+
+                        <input
+                            type="tel"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            autocomplete="off"
+                            id="inches-${tank}"
+                            placeholder="0"
+                            oninput="numbersOnly(this)"
+                        />
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(card);
+
+            measurements[tank] = {
+                skipped: false
+            };
+        });
+    }
+
+    function numbersOnly(input) {
+        input.value = input.value.replace(/[^0-9]/g, "");
+    }
+
+    function toggleSkip(tank) {
+
+        measurements[tank].skipped = !measurements[tank].skipped;
+
+        const skipped = measurements[tank].skipped;
+
+        const feetInput = document.getElementById(`feet-${tank}`);
+        const inchesInput = document.getElementById(`inches-${tank}`);
+        const skipBtn = document.getElementById(`skip-${tank}`);
+
+        feetInput.disabled = skipped;
+        inchesInput.disabled = skipped;
+
+        feetInput.classList.toggle("skipped", skipped);
+        inchesInput.classList.toggle("skipped", skipped);
+
+        skipBtn.textContent = skipped ? "Skipped" : "Skip";
+    }
+
+    function generateOutput() {
+
+        let text = "";
+
+        tanks.forEach(tank => {
+
+            if (measurements[tank].skipped) {
+                text += `${tank} SKIPPED\n`;
+                return;
+            }
+
+            const feet =
+                document.getElementById(`feet-${tank}`).value || 0;
+
+            const inches =
+                document.getElementById(`inches-${tank}`).value || 0;
+
+            text += `${tank} ${inches}" ${feet}'\n`;
+        });
+
+        document.getElementById("output").value = text;
+
+        return text;
+    }
+
+    async function copyMeasurements() {
+
+        const text = generateOutput();
+
+        try {
+            await navigator.clipboard.writeText(text);
+
+            alert("Copied all measurements 📋");
+
+        } catch {
+
+            alert("Could not copy automatically.");
+        }
+    }
+
+    renderTanks();
+</script>
+
+</body>
+</html>
