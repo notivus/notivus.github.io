@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<title>Tank Measurements Woo</title>
+<title>Tank Measurements</title>
 
 <style>
     * {
@@ -29,7 +29,6 @@
         background: #1c1c1c;
         border-radius: 18px;
         padding: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
 
     .tank-row {
@@ -40,20 +39,9 @@
         border-bottom: 1px solid #2d2d2d;
     }
 
-    .tank-row:last-child {
-        border-bottom: none;
-    }
-
     .tank-label {
         width: 42px;
         font-weight: bold;
-        font-size: 1rem;
-    }
-
-    .input-wrap {
-        display: flex;
-        align-items: center;
-        gap: 4px;
     }
 
     input {
@@ -69,7 +57,6 @@
 
     .unit {
         color: #aaa;
-        font-size: 0.9rem;
     }
 
     .skip-btn {
@@ -85,10 +72,6 @@
 
     .skip-btn.active {
         background: #8b3d3d;
-    }
-
-    input:disabled {
-        opacity: 0.4;
     }
 
     .copy-btn {
@@ -107,16 +90,15 @@
         width: 100%;
         height: 160px;
         margin-top: 14px;
-        border: none;
         border-radius: 14px;
+        border: none;
         background: #252525;
         color: white;
         padding: 12px;
-        font-size: 0.95rem;
-        resize: none;
     }
 </style>
 </head>
+
 <body>
 
 <h1>🛢 Tank Measurements</h1>
@@ -124,208 +106,123 @@
 <div class="main-container" id="tankContainer"></div>
 
 <button class="copy-btn" onclick="copyMeasurements()">
-    Copy All Measurements
+    Copy All
 </button>
 
-<textarea
-    id="output"
-    readonly
-    placeholder="Measurements will appear here..."
-></textarea>
+<textarea id="output" readonly></textarea>
 
 <script>
-    const tanks = ["P1", "P2", "P3", "P4", "P5", "P6"];
+const tanks = ["P1","P2","P3","P4","P5","P6"];
 
-    const measurements = {};
-
+function render() {
     const container = document.getElementById("tankContainer");
 
-    function renderTanks() {
+    let html = "";
+    let focusList = [];
 
-        container.innerHTML = "";
+    tanks.forEach((t, i) => {
 
-        tanks.forEach((tank, index) => {
+        const nextFeet = `feet-${tanks[i+1] || ""}`;
 
-            measurements[tank] = {
-                skipped: false
-            };
+        html += `
+        <div class="tank-row">
+            <div class="tank-label">${t}</div>
 
-            const nextTank = tanks[index + 1];
+            <input
+                id="feet-${t}"
+                type="tel"
+                inputmode="numeric"
+                data-next="inches-${t}"
+            />
 
-            const row = document.createElement("div");
+            <span class="unit">'</span>
 
-            row.className = "tank-row";
+            <input
+                id="inches-${t}"
+                type="tel"
+                inputmode="numeric"
+                data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ""}"
+            />
 
-            row.innerHTML = `
-                <div class="tank-label">${tank}</div>
+            <span class="unit">"</span>
 
-                <div class="input-wrap">
-                    <input
-                        type="tel"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autocomplete="off"
-                        enterkeyhint="next"
-                        id="feet-${tank}"
-                        data-next="inches-${tank}"
-                        placeholder="0"
-                        oninput="numbersOnly(this)"
-                    />
+            <button class="skip-btn" onclick="skip('${t}', this)">Skip</button>
+        </div>`;
+    });
 
-                    <span class="unit">'</span>
-                </div>
+    container.innerHTML = html;
 
-                <div class="input-wrap">
-                    <input
-                        type="tel"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autocomplete="off"
-                        enterkeyhint="${nextTank ? 'next' : 'done'}"
-                        id="inches-${tank}"
-                        data-next="${nextTank ? `feet-${nextTank}` : ''}"
-                        placeholder="0"
-                        oninput="numbersOnly(this)"
-                    />
+    setupFlow();
+}
 
-                    <span class="unit">"</span>
-                </div>
+function setupFlow() {
+    const inputs = Array.from(document.querySelectorAll("input"));
 
-                <button
-                    class="skip-btn"
-                    id="skip-${tank}"
-                    onclick="toggleSkip('${tank}')"
-                >
-                    Skip
-                </button>
-            `;
+    inputs.forEach((input, index) => {
 
-            container.appendChild(row);
-        });
+        input.addEventListener("input", () => {
+            input.value = input.value.replace(/[^0-9]/g, "");
 
-        setupNavigation();
-    }
-
-    function numbersOnly(input) {
-
-        input.value =
-            input.value.replace(/[^0-9]/g, "");
-    }
-
-    function setupNavigation() {
-
-        const inputs =
-            document.querySelectorAll("input");
-
-        inputs.forEach(input => {
-
-            input.addEventListener("keyup", function(e) {
-
-                if (
-                    e.key === "Enter" ||
-                    e.keyCode === 13
-                ) {
-
-                    e.preventDefault();
-
-                    const nextId =
-                        this.dataset.next;
-
-                    if (nextId) {
-
-                        const nextField =
-                            document.getElementById(nextId);
-
-                        if (nextField && !nextField.disabled) {
-
-                            nextField.focus();
-
-                            setTimeout(() => {
-                                nextField.select();
-                            }, 50);
-                        }
-
-                    } else {
-
-                        this.blur();
+            // AUTO ADVANCE when value entered
+            if (input.value.length > 0) {
+                const nextId = input.dataset.next;
+                if (nextId) {
+                    const next = document.getElementById(nextId);
+                    if (next) {
+                        setTimeout(() => {
+                            next.focus();
+                            next.select();
+                        }, 80);
                     }
+                } else {
+                    input.blur();
                 }
-            });
-        });
-    }
-
-    function toggleSkip(tank) {
-
-        measurements[tank].skipped =
-            !measurements[tank].skipped;
-
-        const skipped =
-            measurements[tank].skipped;
-
-        const feet =
-            document.getElementById(`feet-${tank}`);
-
-        const inches =
-            document.getElementById(`inches-${tank}`);
-
-        const button =
-            document.getElementById(`skip-${tank}`);
-
-        feet.disabled = skipped;
-        inches.disabled = skipped;
-
-        button.classList.toggle("active", skipped);
-
-        button.textContent =
-            skipped ? "Skipped" : "Skip";
-    }
-
-    function generateOutput() {
-
-        let text = "";
-
-        tanks.forEach(tank => {
-
-            if (measurements[tank].skipped) {
-
-                text += `${tank} SKIPPED\n`;
-
-                return;
             }
-
-            const feet =
-                document.getElementById(`feet-${tank}`).value || 0;
-
-            const inches =
-                document.getElementById(`inches-${tank}`).value || 0;
-
-            text += `${tank} ${inches}" ${feet}'\n`;
         });
 
-        document.getElementById("output").value =
-            text;
+        // iOS fallback: manual "done/next" key handling
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const nextId = input.dataset.next;
+                if (nextId) {
+                    document.getElementById(nextId)?.focus();
+                } else {
+                    input.blur();
+                }
+            }
+        });
+    });
+}
 
-        return text;
-    }
+function skip(tank, btn) {
+    const feet = document.getElementById(`feet-${tank}`);
+    const inches = document.getElementById(`inches-${tank}`);
 
-    async function copyMeasurements() {
+    const disabled = !feet.disabled;
 
-        const text =
-            generateOutput();
+    feet.disabled = disabled;
+    inches.disabled = disabled;
 
-        try {
+    btn.classList.toggle("active", disabled);
+    btn.textContent = disabled ? "Skipped" : "Skip";
+}
 
-            await navigator.clipboard.writeText(text);
+function copyMeasurements() {
+    let out = "";
 
-            alert("Copied all measurements 📋");
+    tanks.forEach(t => {
+        const f = document.getElementById(`feet-${t}`).value || 0;
+        const i = document.getElementById(`inches-${t}`).value || 0;
 
-        } catch {
+        out += `${t} ${i}" ${f}'\n`;
+    });
 
-            alert("Could not copy automatically.");
-        }
-    }
+    document.getElementById("output").value = out;
+    navigator.clipboard.writeText(out);
+}
 
-    renderTanks();
+render();
 </script>
 
 </body>
