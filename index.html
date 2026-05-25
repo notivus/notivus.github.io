@@ -101,7 +101,7 @@
 
 <body>
 
-<h1>🛢 Tank Measurements 🛢</h1>
+<h1>🛢 Tank Measurements</h1>
 
 <div class="main-container" id="tankContainer"></div>
 
@@ -110,9 +110,11 @@
 <textarea id="output" readonly></textarea>
 
 <script>
+
 const tanks = ["P1","P2","P3","P4","P5","P6"];
 
 function render() {
+
     const container = document.getElementById("tankContainer");
 
     let html = "";
@@ -129,7 +131,6 @@ function render() {
                 type="tel"
                 inputmode="numeric"
                 autocomplete="off"
-                enterkeyhint="next"
                 data-next="inches-${t}"
             />
 
@@ -140,7 +141,6 @@ function render() {
                 type="tel"
                 inputmode="numeric"
                 autocomplete="off"
-                enterkeyhint="${i === tanks.length - 1 ? 'done' : 'next'}"
                 data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ''}"
             />
 
@@ -162,9 +162,11 @@ function setupFlow() {
 
     const inputs = Array.from(document.querySelectorAll("input"));
 
-    function goNext(current) {
+    const timers = new Map();
 
-        const nextId = current.dataset.next;
+    function goNext(input) {
+
+        const nextId = input.dataset.next;
 
         if (nextId) {
 
@@ -179,42 +181,42 @@ function setupFlow() {
             }
 
         } else {
-            current.blur();
+            input.blur();
         }
     }
 
     inputs.forEach(input => {
 
-        // clean input
         input.addEventListener("input", () => {
-            input.value = input.value.replace(/[^0-9]/g, "");
-        });
 
-        // iOS + keyboard "Next"
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
+            input.value = input.value.replace(/[^0-9]/g, "");
+
+            clearTimeout(timers.get(input));
+
+            const val = input.value;
+
+            // 🔥 AUTO ADVANCE RULE:
+            // advance if 2 digits OR user pauses typing
+            const timer = setTimeout(() => {
+
+                if (val.length > 0) {
+                    goNext(input);
+                }
+
+            }, 600);
+
+            timers.set(input, timer);
+
+            if (val.length >= 2) {
                 goNext(input);
             }
         });
 
-        // 🔥 THIS is the key fix:
-        // iOS fires blur when user taps "Next" on keyboard
-        input.addEventListener("blur", (e) => {
-            const value = input.value;
+        input.addEventListener("keydown", (e) => {
 
-            // only advance if user actually entered something
-            if (value !== "") {
-                const next = input.dataset.next;
-                if (next) {
-                    setTimeout(() => {
-                        const n = document.getElementById(next);
-                        if (n) {
-                            n.focus();
-                            n.select();
-                        }
-                    }, 100);
-                }
+            if (e.key === "Enter") {
+                e.preventDefault();
+                goNext(input);
             }
         });
     });
@@ -252,6 +254,7 @@ function copyMeasurements() {
 }
 
 render();
+
 </script>
 
 </body>
