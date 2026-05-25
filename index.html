@@ -39,6 +39,10 @@
         border-bottom: 1px solid #2d2d2d;
     }
 
+    .tank-row:last-child {
+        border-bottom: none;
+    }
+
     .tank-label {
         width: 42px;
         font-weight: bold;
@@ -72,6 +76,10 @@
 
     .skip-btn.active {
         background: #8b3d3d;
+    }
+
+    input:disabled {
+        opacity: 0.4;
     }
 
     .copy-btn {
@@ -118,20 +126,19 @@ function render() {
     const container = document.getElementById("tankContainer");
 
     let html = "";
-    let focusList = [];
 
     tanks.forEach((t, i) => {
 
-        const nextFeet = `feet-${tanks[i+1] || ""}`;
-
         html += `
         <div class="tank-row">
+
             <div class="tank-label">${t}</div>
 
             <input
                 id="feet-${t}"
                 type="tel"
                 inputmode="numeric"
+                autocomplete="off"
                 data-next="inches-${t}"
             />
 
@@ -141,12 +148,16 @@ function render() {
                 id="inches-${t}"
                 type="tel"
                 inputmode="numeric"
-                data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ""}"
+                autocomplete="off"
+                data-next="${tanks[i+1] ? `feet-${tanks[i+1]}` : ''}"
             />
 
             <span class="unit">"</span>
 
-            <button class="skip-btn" onclick="skip('${t}', this)">Skip</button>
+            <button class="skip-btn" onclick="skip('${t}', this)">
+                Skip
+            </button>
+
         </div>`;
     });
 
@@ -156,46 +167,60 @@ function render() {
 }
 
 function setupFlow() {
+
     const inputs = Array.from(document.querySelectorAll("input"));
 
-    inputs.forEach((input, index) => {
+    function goNext(current) {
 
+        const nextId = current.dataset.next;
+
+        if (nextId) {
+
+            const next = document.getElementById(nextId);
+
+            if (next) {
+
+                setTimeout(() => {
+                    next.focus();
+                    next.select();
+                }, 50);
+            }
+
+        } else {
+            current.blur();
+        }
+    }
+
+    inputs.forEach(input => {
+
+        // sanitize numbers only
         input.addEventListener("input", () => {
             input.value = input.value.replace(/[^0-9]/g, "");
 
-            // AUTO ADVANCE when value entered
-            if (input.value.length > 0) {
-                const nextId = input.dataset.next;
-                if (nextId) {
-                    const next = document.getElementById(nextId);
-                    if (next) {
-                        setTimeout(() => {
-                            next.focus();
-                            next.select();
-                        }, 80);
-                    }
-                } else {
-                    input.blur();
-                }
+            if (input.value.length > 2) {
+                input.value = input.value.slice(0, 2);
             }
         });
 
-        // iOS fallback: manual "done/next" key handling
         input.addEventListener("keydown", (e) => {
+
+            // ENTER = next field
             if (e.key === "Enter") {
                 e.preventDefault();
-                const nextId = input.dataset.next;
-                if (nextId) {
-                    document.getElementById(nextId)?.focus();
-                } else {
-                    input.blur();
-                }
+                goNext(input);
+            }
+
+            // SPACE = next field
+            if (e.code === "Space") {
+                e.preventDefault();
+                goNext(input);
             }
         });
     });
 }
 
 function skip(tank, btn) {
+
     const feet = document.getElementById(`feet-${tank}`);
     const inches = document.getElementById(`inches-${tank}`);
 
@@ -209,9 +234,11 @@ function skip(tank, btn) {
 }
 
 function copyMeasurements() {
+
     let out = "";
 
     tanks.forEach(t => {
+
         const f = document.getElementById(`feet-${t}`).value || 0;
         const i = document.getElementById(`inches-${t}`).value || 0;
 
@@ -219,6 +246,7 @@ function copyMeasurements() {
     });
 
     document.getElementById("output").value = out;
+
     navigator.clipboard.writeText(out);
 }
 
