@@ -1661,7 +1661,7 @@ input {
 
 .movie-title {
 
-    font-size: 28px;
+    font-size: 16px;
 
     line-height: 1.15;
 
@@ -1708,7 +1708,7 @@ input {
 
     line-height: 1.55;
 
-    font-size: 14px;
+    font-size: 10px;
 
     white-space: pre-line;
 }
@@ -2143,13 +2143,7 @@ input {
             </div>
 
 
-            <input
-                id="movieSearch"
-                class="search"
-                type="text"
-                placeholder="Search movies..."
-            >
-
+            
         </div>
 
 
