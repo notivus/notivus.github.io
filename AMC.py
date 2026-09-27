@@ -30,7 +30,7 @@ THEATERS = {
     # "AMC Alderwood Mall 16": "456",
 }
 
-DAYS_TO_FETCH = 7
+DAYS_TO_FETCH = 14
 
 OUTPUT_FILE = "amc.html"
 
