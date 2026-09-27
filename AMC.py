@@ -38,7 +38,7 @@ OUTPUT_FILE = "amc.html"
 # Movie API response printed for debugging.
 #
 # Set to None when you are done debugging.
-DEBUG_MOVIE_ID = "84764"
+DEBUG_MOVIE_ID = None
 
 
 # ============================================================
@@ -335,6 +335,23 @@ def extract_text(value):
 
 
 # ============================================================
+# DESCRIPTION CLEANUP
+# ============================================================
+
+
+def clean_description(text):
+    """Remove AMC's flashing-lights warning from movie descriptions."""
+    warning = (
+        "AMC has been advised that this film contains sequences "
+        "with flashing lights that may affect photosensitive viewers."
+    )
+
+    if not text:
+        return ""
+
+    return text.replace(warning, "").strip()
+
+
 # MOVIE METADATA
 # ============================================================
 
@@ -354,13 +371,7 @@ def get_synopsis(movie):
         )
     )
 
-    # Remove AMC's photosensitivity warning from movie descriptions.
-    warning = (
-        "AMC has been advised that this film contains sequences "
-        "with flashing lights that may affect photosensitive viewers."
-    )
-
-    return description.replace(warning, "").strip()
+    return clean_description(description)
 
 
 def get_genre(movie):
@@ -1433,49 +1444,6 @@ input {
 }
 
 
-.sidebar-header {
-
-    padding: 14px;
-
-    border-bottom:
-        1px solid #292c33;
-}
-
-
-.sidebar-title {
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    margin-bottom: 9px;
-}
-
-
-.search {
-
-    width: 100%;
-
-    padding: 9px 10px;
-
-    border-radius: 7px;
-
-    border:
-        1px solid #343840;
-
-    background: #111318;
-
-    color: white;
-
-    outline: none;
-}
-
-
-.search:focus {
-
-    border-color: #e31b23;
-}
-
 
 /* ============================================================
    MOVIE LIST
@@ -1661,7 +1629,7 @@ input {
 
 .movie-title {
 
-    font-size: 16px;
+    font-size: 28px;
 
     line-height: 1.15;
 
@@ -1708,7 +1676,7 @@ input {
 
     line-height: 1.55;
 
-    font-size: 10px;
+    font-size: 14px;
 
     white-space: pre-line;
 }
@@ -2131,23 +2099,7 @@ input {
 <div class="page">
 
 
-    <aside class="sidebar">
-
-        <div class="sidebar-header">
-
-            <div
-                class="sidebar-title"
-                id="sidebarTitle"
-            >
-                Movies
-            </div>
-
-
-            
-        </div>
-
-
-        <div
+    <aside class="sidebar"><div
             class="movie-list"
             id="movieList"
         ></div>
@@ -2364,11 +2316,6 @@ function renderSidebar() {
             "movieList"
         );
 
-    const title =
-        document.getElementById(
-            "sidebarTitle"
-        );
-
     const theater =
         currentTheater();
 
@@ -2379,25 +2326,10 @@ function renderSidebar() {
         return;
     }
 
-    title.textContent =
-        theater.name ||
-        "Movies";
-
-    const search =
-        document
-            .getElementById(
-                "movieSearch"
-            )
-            .value
-            .trim()
-            .toLowerCase();
-
     list.innerHTML = "";
 
     const movies =
         currentMovies();
-
-    let visibleCount = 0;
 
     for (
         const [
@@ -2406,18 +2338,6 @@ function renderSidebar() {
         ]
         of Object.entries(movies)
     ) {
-
-        if (
-            search &&
-            !movieTitle
-                .toLowerCase()
-                .includes(search)
-        ) {
-
-            continue;
-        }
-
-        visibleCount++;
 
         const button =
             document.createElement(
@@ -2485,17 +2405,8 @@ function renderSidebar() {
             button
         );
     }
-
-    if (
-        visibleCount === 0
-    ) {
-
-        list.innerHTML =
-            '<div class="no-results">' +
-            'No movies found.' +
-            '</div>';
-    }
 }
+
 
 
 /* ============================================================
@@ -2933,23 +2844,6 @@ function renderMovie() {
     content.innerHTML =
         html;
 }
-
-
-/* ============================================================
-   SEARCH
-   ============================================================ */
-
-document
-    .getElementById(
-        "movieSearch"
-    )
-    .addEventListener(
-        "input",
-        () => {
-
-            renderSidebar();
-        }
-    );
 
 
 /* ============================================================
