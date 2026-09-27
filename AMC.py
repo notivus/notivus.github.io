@@ -343,7 +343,7 @@ def get_synopsis(movie):
     if not movie:
         return ""
 
-    return extract_text(
+    description = extract_text(
         first_value(
             movie,
             "synopsis",
@@ -353,6 +353,14 @@ def get_synopsis(movie):
             "summary"
         )
     )
+
+    # Remove AMC's photosensitivity warning from movie descriptions.
+    warning = (
+        "AMC has been advised that this film contains sequences "
+        "with flashing lights that may affect photosensitive viewers."
+    )
+
+    return description.replace(warning, "").strip()
 
 
 def get_genre(movie):
